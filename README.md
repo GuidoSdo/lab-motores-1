@@ -10,6 +10,13 @@ Proyecto Unity para **Clases de Motores 1 - 2026 C1**.
 
 Abrir el proyecto desde la raiz del repositorio, no desde `Assets`.
 
+## Paquetes principales
+
+- Cinemachine (`com.unity.cinemachine`): camaras y seguimiento del jugador.
+- ProBuilder (`com.unity.probuilder`): modelado y prototipado de niveles dentro de Unity. Instalar desde Package Manager si todavia no aparece en `Packages/manifest.json`.
+- Input System (`com.unity.inputsystem`): manejo de acciones de input.
+- Universal Render Pipeline (`com.unity.render-pipelines.universal`): pipeline grafico del proyecto.
+
 ## Estructura del repositorio
 
 Unity usa carpetas de proyecto con responsabilidades distintas:
@@ -51,15 +58,13 @@ Assets/
     Tests/
       EditMode/
       PlayMode/
-  Scenes/
   Settings/
   TutorialInfo/
 ```
 
 Uso esperado:
 
-- `Assets/_Project/Scenes`: escenas propias nuevas del proyecto.
-- `Assets/Scenes`: escenas existentes o creadas por el template inicial.
+- `Assets/_Project/Scenes`: escenas del proyecto, incluidas escenas nuevas y escenas migradas desde el template inicial.
 - `Assets/_Project/Scripts/Runtime`: codigo que entra al build del juego.
 - `Assets/_Project/Scripts/Editor`: herramientas de editor y scripts que no entran al build.
 - `Assets/_Project/Editor`: assets o utilidades globales exclusivas del editor.
