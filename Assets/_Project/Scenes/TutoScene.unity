@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 528793359}
   - component: {fileID: 528793358}
   - component: {fileID: 528793357}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -406,6 +406,22 @@ PrefabInstance:
     - target: {fileID: 639508572382846500, guid: 10563c153a3b27343b95efa68c144411, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4259202523543896411, guid: 10563c153a3b27343b95efa68c144411, type: 3}
+      propertyPath: field of view
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4259202523543896411, guid: 10563c153a3b27343b95efa68c144411, type: 3}
+      propertyPath: m_FocalLength
+      value: 25.734083
+      objectReference: {fileID: 0}
+    - target: {fileID: 4259202523543896411, guid: 10563c153a3b27343b95efa68c144411, type: 3}
+      propertyPath: far clip plane
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 4259202523543896411, guid: 10563c153a3b27343b95efa68c144411, type: 3}
+      propertyPath: m_projectionMatrixMode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7565767048124621487, guid: 10563c153a3b27343b95efa68c144411, type: 3}
       propertyPath: m_Name
