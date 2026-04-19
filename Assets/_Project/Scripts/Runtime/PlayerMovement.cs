@@ -24,6 +24,9 @@ public class PlayerMovement : MonoBehaviour
     [Header("Camera")]
     [SerializeField] private Transform _cameraTransform;
 
+
+   
+
     // ================
     // Variable Internas
     //=================
@@ -42,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         _controller = GetComponent<CharacterController>();
+        
     }
     private void Start()
     {
@@ -91,12 +95,10 @@ public class PlayerMovement : MonoBehaviour
         transform.Rotate(Vector3.up * mouseX);
 
         _pitch -= mouseY;
-        _pitch = Mathf.Clamp(_pitch, -80f, 80f);
+        _pitch = Mathf.Clamp(_pitch, -70f, 70f);
 
         _cameraTransform.localRotation = Quaternion.Euler(_pitch, 0, 0);
-        //float mouseX = _look.x * _rotateSpeed * Time.deltaTime;
-
-        //transform.Rotate(Vector3.up * mouseX);
+        
     }
 
 
@@ -149,7 +151,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (context.performed)
         {
-
+         
         }
         if (context.canceled)
         {
