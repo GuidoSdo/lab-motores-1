@@ -18,14 +18,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _rotateSpeed = 100f;
 
     [Header("Jump Specs")]
+    // TODO: Renombrar a _jumpHeight, porque esta formula usa altura de salto y no fuerza fisica.
     [SerializeField] private float _jumpForce = 5f;
     [SerializeField] private float _gravity = -9.8f;
 
     [Header("Camera")]
     [SerializeField] private Transform _cameraTransform;
-
-
-   
 
     // ================
     // Variable Internas
@@ -89,6 +87,12 @@ public class PlayerMovement : MonoBehaviour
     }
     private void HandleLook() 
     {
+        if (_cameraTransform == null)
+        {
+            Debug.LogError("PlayerMovement needs a camera assigned in the inspector.", this);
+            return;
+        }
+
         float mouseX = _look.x * _rotateSpeed *Time.deltaTime;
         float mouseY =  _look.y * _rotateSpeed * Time.deltaTime;
 
@@ -131,6 +135,7 @@ public class PlayerMovement : MonoBehaviour
     }
     public void OnJump(InputAction.CallbackContext context) 
     {
+        // TODO: Revisar si el salto falla en bordes o al aterrizar, porque isGrounded depende del ultimo Move del CharacterController.
         if (context.performed && _controller.isGrounded) 
         {
             _verticalVelocity = Mathf.Sqrt(_jumpForce * -2f * -_gravity);
@@ -138,6 +143,7 @@ public class PlayerMovement : MonoBehaviour
     }
     public void OnCrouch(InputAction.CallbackContext context) 
     {
+        // TODO: Implementar agacharse cuando este definida la mecanica.
         if (context.performed)
         {
             
@@ -149,6 +155,7 @@ public class PlayerMovement : MonoBehaviour
     }
     public void OnCameraMonster(InputAction.CallbackContext context) 
     {
+        // TODO: Implementar camara de monstruo cuando este definida la mecanica.
         if (context.performed)
         {
          
