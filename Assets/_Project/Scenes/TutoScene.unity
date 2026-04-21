@@ -232,17 +232,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &992925818 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6229533040964604301, guid: 10563c153a3b27343b95efa68c144411, type: 3}
-  m_PrefabInstance: {fileID: 2021045904}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15d5174416d78694fb66a611f9469956, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
 --- !u!1 &1853667068
 GameObject:
   m_ObjectHideFlags: 0
@@ -530,80 +519,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4259202523543896411, guid: 10563c153a3b27343b95efa68c144411, type: 3}
-      propertyPath: field of view
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 4259202523543896411, guid: 10563c153a3b27343b95efa68c144411, type: 3}
-      propertyPath: m_FocalLength
-      value: 25.734083
-      objectReference: {fileID: 0}
-    - target: {fileID: 4259202523543896411, guid: 10563c153a3b27343b95efa68c144411, type: 3}
-      propertyPath: far clip plane
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 4259202523543896411, guid: 10563c153a3b27343b95efa68c144411, type: 3}
-      propertyPath: m_projectionMatrixMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6229533040964604301, guid: 10563c153a3b27343b95efa68c144411, type: 3}
-      propertyPath: _gravity
-      value: -12
-      objectReference: {fileID: 0}
-    - target: {fileID: 6229533040964604301, guid: 10563c153a3b27343b95efa68c144411, type: 3}
-      propertyPath: _jumpForce
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6229533040964604301, guid: 10563c153a3b27343b95efa68c144411, type: 3}
-      propertyPath: _rayLength
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 6229533040964604301, guid: 10563c153a3b27343b95efa68c144411, type: 3}
-      propertyPath: _sprintSpeed
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 7565767048124621487, guid: 10563c153a3b27343b95efa68c144411, type: 3}
       propertyPath: m_Name
       value: Player 1
       objectReference: {fileID: 0}
-    - target: {fileID: 8884530983409943528, guid: 10563c153a3b27343b95efa68c144411, type: 3}
-      propertyPath: m_ActionEvents.Array.data[6].m_ActionId
-      value: 1d71aa55-f74b-447e-a584-bde3b3032008
-      objectReference: {fileID: 0}
-    - target: {fileID: 8884530983409943528, guid: 10563c153a3b27343b95efa68c144411, type: 3}
-      propertyPath: m_ActionEvents.Array.data[6].m_ActionName
-      value: 'Player/Interact[/Keyboard/e]'
-      objectReference: {fileID: 0}
-    - target: {fileID: 8884530983409943528, guid: 10563c153a3b27343b95efa68c144411, type: 3}
-      propertyPath: m_ActionEvents.Array.data[6].m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8884530983409943528, guid: 10563c153a3b27343b95efa68c144411, type: 3}
-      propertyPath: m_ActionEvents.Array.data[6].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8884530983409943528, guid: 10563c153a3b27343b95efa68c144411, type: 3}
-      propertyPath: m_ActionEvents.Array.data[6].m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 992925818}
-    - target: {fileID: 8884530983409943528, guid: 10563c153a3b27343b95efa68c144411, type: 3}
-      propertyPath: m_ActionEvents.Array.data[6].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8884530983409943528, guid: 10563c153a3b27343b95efa68c144411, type: 3}
-      propertyPath: m_ActionEvents.Array.data[6].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnInteract
-      objectReference: {fileID: 0}
-    - target: {fileID: 8884530983409943528, guid: 10563c153a3b27343b95efa68c144411, type: 3}
-      propertyPath: m_ActionEvents.Array.data[6].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: PlayerMovement, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 8884530983409943528, guid: 10563c153a3b27343b95efa68c144411, type: 3}
-      propertyPath: m_ActionEvents.Array.data[6].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 3814765860701653074, guid: 10563c153a3b27343b95efa68c144411, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
