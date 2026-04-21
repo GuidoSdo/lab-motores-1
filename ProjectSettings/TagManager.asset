@@ -11,10 +11,10 @@ TagManager:
   - GroundLayer
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - OutlineObject
+  - FXEnemy
+  - Screen
   - 
   - 
   - 
