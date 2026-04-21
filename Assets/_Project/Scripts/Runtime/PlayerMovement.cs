@@ -24,8 +24,13 @@ public class PlayerMovement : MonoBehaviour
     [Header("Camera")]
     [SerializeField] private Transform _cameraTransform;
 
+    [Header("RayCastConfig")]
+    [SerializeField] private float _rayLength;
+    
+    [Header("SphereCastConfig")]
+    [SerializeField] private float _radius;
+    [SerializeField] private LayerMask _groundLayer;
 
-   
 
     // ================
     // Variable Internas
@@ -45,7 +50,6 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         _controller = GetComponent<CharacterController>();
-        
     }
     private void Start()
     {
@@ -58,6 +62,7 @@ public class PlayerMovement : MonoBehaviour
         HandleMovement();
         HandleRotation();
         HandleLook();
+        
     }
 
 
@@ -71,7 +76,7 @@ public class PlayerMovement : MonoBehaviour
 
         move = move.normalized * _speed;
 
-        if (_controller.isGrounded && _verticalVelocity < 0) 
+        if (IsGrounded() && _verticalVelocity < 0) 
         {
             _verticalVelocity = -2f;
         }
@@ -95,12 +100,15 @@ public class PlayerMovement : MonoBehaviour
         transform.Rotate(Vector3.up * mouseX);
 
         _pitch -= mouseY;
-        _pitch = Mathf.Clamp(_pitch, -70f, 70f);
+        _pitch = Mathf.Clamp(_pitch, -80f, 80f);
 
         _cameraTransform.localRotation = Quaternion.Euler(_pitch, 0, 0);
         
     }
-
+    // ================
+    // Ground BOOL
+    //=================
+    private bool IsGrounded() => _controller.isGrounded;
 
     // ================
     // Unity Events
@@ -120,7 +128,7 @@ public class PlayerMovement : MonoBehaviour
     }
     public void OnSprint(InputAction.CallbackContext context) 
     {
-        if (context.performed) 
+        if (context.performed && IsGrounded())
         {
             _speed = _sprintSpeed;
         }
@@ -131,32 +139,45 @@ public class PlayerMovement : MonoBehaviour
     }
     public void OnJump(InputAction.CallbackContext context) 
     {
-        if (context.performed && _controller.isGrounded) 
+        if (context.started && IsGrounded()) 
         {
-            _verticalVelocity = Mathf.Sqrt(_jumpForce * -2f * -_gravity);
+           
+           _verticalVelocity = Mathf.Sqrt(_jumpForce *2f* -_gravity);
+           
         }
     }
-    public void OnCrouch(InputAction.CallbackContext context) 
-    {
-        if (context.performed)
-        {
-            
-        }
-        if (context.canceled)
-        {
-            
-        }
-    }
+    
     public void OnCameraMonster(InputAction.CallbackContext context) 
     {
         if (context.performed)
         {
-         
+
         }
         if (context.canceled)
         {
 
         }
     }
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Ray ray = new Ray(_cameraTransform.position, _cameraTransform.forward);
+            RaycastHit hit;
 
+            if (Physics.Raycast(ray, out hit, _rayLength)&& hit.collider.CompareTag("Interactivo"))
+            {
+                Debug.Log("puede interactuar");
+
+            }
+            
+            
+            
+        }
+      
+    }
+
+    
+
+  
 }

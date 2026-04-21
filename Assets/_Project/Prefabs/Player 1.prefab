@@ -101,7 +101,6 @@ GameObject:
   - component: {fileID: 1876990546200371129}
   - component: {fileID: 957910401239483153}
   - component: {fileID: 3547289724909303676}
-  - component: {fileID: 3814765860701653074}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -181,27 +180,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &3814765860701653074
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5001569044610237053}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6430794762933808847
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,7 +233,7 @@ Camera:
   m_ShutterSpeed: 0.005
   m_Aperture: 16
   m_FocusDistance: 10
-  m_FocalLength: 50
+  m_FocalLength: 25.734083
   m_BladeCount: 5
   m_Curvature: {x: 2, y: 11}
   m_BarrelClipping: 0.25
@@ -269,8 +247,8 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
-  field of view: 60.000004
+  far clip plane: 50
+  field of view: 50
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -385,7 +363,7 @@ GameObject:
   - component: {fileID: 8884530983409943528}
   - component: {fileID: 6229533040964604301}
   m_Layer: 0
-  m_Name: Player
+  m_Name: Player 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -544,9 +522,21 @@ MonoBehaviour:
     m_ActionId: ac563fdd-1926-4e99-a763-40d5ca7418ed
     m_ActionName: 'Player/MonsterCam[/Keyboard/tab]'
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 5e144abf-6548-4b61-86fa-f6098ad04baf
-    m_ActionName: 'Player/Crouch[/Keyboard/leftCtrl]'
+      m_Calls:
+      - m_Target: {fileID: 6229533040964604301}
+        m_TargetAssemblyTypeName: PlayerMovement, Assembly-CSharp
+        m_MethodName: OnInteract
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 1d71aa55-f74b-447e-a584-bde3b3032008
+    m_ActionName: 'Player/Interact[/Keyboard/e]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard & Mouse
   m_DefaultActionMap: Player
@@ -567,6 +557,11 @@ MonoBehaviour:
   _normalSpeed: 5
   _sprintSpeed: 10
   _rotateSpeed: 100
-  _jumpForce: 5
-  _gravity: -9.8
+  _jumpForce: 2
+  _gravity: -12
   _cameraTransform: {fileID: 7995044302871098811}
+  _rayLength: 10
+  _radius: 0
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
