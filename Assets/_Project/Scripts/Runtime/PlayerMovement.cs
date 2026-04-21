@@ -18,12 +18,17 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _rotateSpeed = 100f;
 
     [Header("Jump Specs")]
-    // TODO: Renombrar a _jumpHeight, porque esta formula usa altura de salto y no fuerza fisica.
-    [SerializeField] private float _jumpForce = 5f;
-    [SerializeField] private float _gravity = -9.8f;
+    [SerializeField] private float _jumpHeight = 2f;
+    [SerializeField] private float _gravity = -12f;
 
     [Header("Camera")]
     [SerializeField] private Transform _cameraTransform;
+
+    [Header("RayCastConfig")]
+    [SerializeField] private float _rayLength;
+    
+   
+
 
     // ================
     // Variable Internas
@@ -43,7 +48,6 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         _controller = GetComponent<CharacterController>();
-        
     }
     private void Start()
     {
@@ -56,6 +60,7 @@ public class PlayerMovement : MonoBehaviour
         HandleMovement();
         HandleRotation();
         HandleLook();
+        
     }
 
 
@@ -69,7 +74,7 @@ public class PlayerMovement : MonoBehaviour
 
         move = move.normalized * _speed;
 
-        if (_controller.isGrounded && _verticalVelocity < 0) 
+        if (IsGrounded() && _verticalVelocity < 0) 
         {
             _verticalVelocity = -2f;
         }
@@ -87,24 +92,21 @@ public class PlayerMovement : MonoBehaviour
     }
     private void HandleLook() 
     {
-        if (_cameraTransform == null)
-        {
-            Debug.LogError("PlayerMovement needs a camera assigned in the inspector.", this);
-            return;
-        }
-
         float mouseX = _look.x * _rotateSpeed *Time.deltaTime;
         float mouseY =  _look.y * _rotateSpeed * Time.deltaTime;
 
         transform.Rotate(Vector3.up * mouseX);
 
         _pitch -= mouseY;
-        _pitch = Mathf.Clamp(_pitch, -70f, 70f);
+        _pitch = Mathf.Clamp(_pitch, -80f, 80f);
 
         _cameraTransform.localRotation = Quaternion.Euler(_pitch, 0, 0);
         
     }
-
+    // ================
+    // Ground BOOL
+    //=================
+    private bool IsGrounded() => _controller.isGrounded;
 
     // ================
     // Unity Events
@@ -124,7 +126,7 @@ public class PlayerMovement : MonoBehaviour
     }
     public void OnSprint(InputAction.CallbackContext context) 
     {
-        if (context.performed) 
+        if (context.performed && IsGrounded())
         {
             _speed = _sprintSpeed;
         }
@@ -135,35 +137,45 @@ public class PlayerMovement : MonoBehaviour
     }
     public void OnJump(InputAction.CallbackContext context) 
     {
-        // TODO: Revisar si el salto falla en bordes o al aterrizar, porque isGrounded depende del ultimo Move del CharacterController.
-        if (context.performed && _controller.isGrounded) 
+        if (context.started && IsGrounded()) 
         {
-            _verticalVelocity = Mathf.Sqrt(_jumpForce * -2f * -_gravity);
+           
+           _verticalVelocity = Mathf.Sqrt(_jumpHeight *2f* -_gravity);
+           
         }
     }
-    public void OnCrouch(InputAction.CallbackContext context) 
-    {
-        // TODO: Implementar agacharse cuando este definida la mecanica.
-        if (context.performed)
-        {
-            
-        }
-        if (context.canceled)
-        {
-            
-        }
-    }
+    
     public void OnCameraMonster(InputAction.CallbackContext context) 
     {
-        // TODO: Implementar camara de monstruo cuando este definida la mecanica.
         if (context.performed)
         {
-         
+
         }
         if (context.canceled)
         {
 
         }
     }
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Ray ray = new Ray(_cameraTransform.position, _cameraTransform.forward);
+            RaycastHit hit;
 
+            if (Physics.Raycast(ray, out hit, _rayLength)&& hit.collider.CompareTag("Interactivo"))
+            {
+                Debug.Log("puede interactuar");
+
+            }
+            
+            
+            
+        }
+      
+    }
+
+    
+
+  
 }
