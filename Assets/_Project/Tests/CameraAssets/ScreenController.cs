@@ -10,7 +10,7 @@ public class ScreenController : MonoBehaviour
 
     public float armSpeed = 20f;
     private bool readyToScreen = true;
-    private bool onScreen = false;
+    private bool onScreen = true;
     public float screenCooldown = 0.25f;
     private float rotX;
     public Key buttonCamera;
@@ -57,14 +57,22 @@ public class ScreenController : MonoBehaviour
     }
     void Update()
     {
-        SwapStates();
+        print(state + " " + hasBattery);
+        SwapStates(); //Temporal
+        setState(state); //Depende que state haya, cambia la pantalla
         ScreenInput();
         ArmControl();
         BatteryControl();
+
     }
 
     public void BatteryRecharge(float charge)
     {
+        if (!hasBattery && state == "Off" && onScreen)
+        {
+            hasBattery = true;
+            state = "On";
+        }
         if (currentBattery + charge > maxBattery)
         {
             currentBattery = maxBattery;
@@ -80,17 +88,18 @@ public class ScreenController : MonoBehaviour
     //Si recarga batería puede volver a encender y apagar
     public void BatteryControl()
     {
-        
-        
-        if (state == "On" && hasBattery)
+
+
+        if (onScreen && hasBattery && state == "On")
         {
             currentBattery -= drainSpeed * Time.deltaTime;
         }
+
         else if (!hasBattery)
         {
-            setOff();
+            state = "Off";
         }
-        
+
         currentBattery = Mathf.Clamp(currentBattery, 0f, maxBattery);
         batteryFill.color = Color.Lerp(Color.red, Color.green, currentBattery / maxBattery);
         batteryFill.fillAmount = currentBattery / maxBattery;
@@ -158,11 +167,11 @@ public class ScreenController : MonoBehaviour
             onScreen = !onScreen;
             if (onScreen)
             {
-                setOff();
+                state = "On";
             }
-            else if (!onScreen)
+            else
             {
-                setOn();
+                state = "Off";
             }
             Invoke(nameof(ResetScreen), screenCooldown); //Cooldown para no spamear el botón de cámara
 
@@ -181,7 +190,7 @@ public class ScreenController : MonoBehaviour
     private void ArmControl()
     {
         //Si onScreen es verdadero target=35f, si es falso target=0f
-        float target = onScreen ? 35f : 0f;
+        float target = onScreen ? 0f : 35f;
         //"Animacion" de la camara levantandose y escondiendose
         rotX = Mathf.MoveTowards(rotX, target, armSpeed * Time.deltaTime); //Se mueve hacia  rotando
         screenArm.localRotation = Quaternion.Euler(rotX, 0f, 0f);
@@ -197,48 +206,56 @@ public class ScreenController : MonoBehaviour
     {
         if (Keyboard.current[staticState].wasPressedThisFrame)
         {
-            setStatic();
+            state = "Static";
         }
         if (Keyboard.current[offState].wasPressedThisFrame)
         {
-            setOff();
+            state = "Off";
         }
         if (Keyboard.current[cameraState].wasPressedThisFrame)
         {
-            setOn();
+            state = "On";
+        }
+    }
+
+    private void setState(string stateInput)
+    {
+        switch (stateInput)
+        {
+            case "on" or "On":
+                setOn();
+                break;
+            case "off" or "Off":
+                setOff();
+                break;
+            case "static" or "Static":
+                setStatic();
+                break;
+
+            default:
+                setOn();
+                break;
         }
     }
 
     //Seteos de los Estados (Encendido, Apagado o Estatica) (Para reutilizar codigo)
     private void setOn()
     {
-        if (state != "On")
-        {
-            backLight.enabled = true;
-            staticVideo.Stop();
-            screenRenderer.material.SetTexture("_BaseMap", cameraTexture);
-            state = "On";
-        }
+        backLight.enabled = true;
+        staticVideo.Stop();
+        screenRenderer.material.SetTexture("_BaseMap", cameraTexture);
     }
     private void setOff()
     {
-        if (state != "Off")
-        {
-            backLight.enabled = false;
-            staticVideo.Stop();
-            screenRenderer.material.SetTexture("_BaseMap", offTexture);
-            state = "Off";
-        }
+        backLight.enabled = false;
+        staticVideo.Stop();
+        screenRenderer.material.SetTexture("_BaseMap", offTexture);
     }
     private void setStatic()
     {
-        if (state != "Static")
-        {
-            backLight.enabled = true;
-            screenRenderer.material.SetTexture("_BaseMap", offTexture);
-            staticVideo.Play();
-            state = "Static";
-        }
+        backLight.enabled = true;
+        screenRenderer.material.SetTexture("_BaseMap", offTexture);
+        staticVideo.Play();
     }
 
 }
