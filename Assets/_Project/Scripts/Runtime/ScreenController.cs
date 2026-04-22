@@ -57,7 +57,6 @@ public class ScreenController : MonoBehaviour
     }
     void Update()
     {
-        print(state + " " + hasBattery);
         SwapStates(); //Temporal
         setState(state); //Depende que state haya, cambia la pantalla
         ScreenInput();
