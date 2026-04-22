@@ -163,6 +163,8 @@ public class PlayerMovement : MonoBehaviour
             Ray ray = new Ray(_cameraTransform.position, _cameraTransform.forward);
             RaycastHit hit;
 
+            Debug.DrawRay(_cameraTransform.position, _cameraTransform.forward * _rayLength, Color.red, 1f);
+
             if (Physics.Raycast(ray, out hit, _rayLength)&& hit.collider.CompareTag("Interactivo"))
             {
                 Debug.Log("puede interactuar");
