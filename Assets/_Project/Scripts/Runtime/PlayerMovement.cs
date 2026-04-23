@@ -24,8 +24,6 @@ public class PlayerMovement : MonoBehaviour
     [Header("Camera")]
     [SerializeField] private Transform _cameraTransform;
 
-    [Header("RayCastConfig")]
-    [SerializeField] private float _rayLength;
     
    
 
@@ -156,24 +154,7 @@ public class PlayerMovement : MonoBehaviour
 
         }
     }
-    public void OnInteract(InputAction.CallbackContext context)
-    {
-        if (context.performed)
-        {
-            Ray ray = new Ray(_cameraTransform.position, _cameraTransform.forward);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit, _rayLength)&& hit.collider.CompareTag("Interactivo"))
-            {
-                Debug.Log("puede interactuar");
-
-            }
-            
-            
-            
-        }
-      
-    }
+    
 
     
 

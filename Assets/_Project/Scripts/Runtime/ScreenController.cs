@@ -33,128 +33,44 @@ public class ScreenController : MonoBehaviour
     public Texture offTexture;
     public VideoPlayer staticVideo;
 
-    private string state = "On";
+    
+
+    public enum ScreenState
+    {
+        On,
+        Off,
+        Static
+    }
+    private ScreenState state = ScreenState.On;
 
     //Batería
     [Header("Batería")]
-    public Image batteryFill;
+    private BatteryController battery;
+    [SerializeField] private Image batteryFill;
+    [SerializeField] private float drainMultiplier = 1f;
 
-    public float maxBattery = 100f;
-    public float currentBattery;
-
-    public float drainSpeed = 5f;
-
-    private bool hasBattery = true;
 
     //Que pueda pulsar un botón que llame a una funcion del enemigo (Afectar)
+
+
+    private void Awake()
+    {
+        battery = GetComponentInParent<BatteryController>();
+    }
 
     private void Start()
     {
         //Valores Iniciales
         rotX = screenArm.rotation.eulerAngles.x;
         screenArm.Rotate(35, 0, 0);
-        currentBattery = maxBattery;
     }
     void Update()
     {
-        SwapStates(); //Temporal
-        setState(state); //Depende que state haya, cambia la pantalla
         ScreenInput();
         ArmControl();
-        BatteryControl();
+        BatteryUsage();
+        UpdateUI();
 
-    }
-
-    public void BatteryRecharge(float charge)
-    {
-        if (!hasBattery && state == "Off" && onScreen)
-        {
-            hasBattery = true;
-            state = "On";
-        }
-        if (currentBattery + charge > maxBattery)
-        {
-            currentBattery = maxBattery;
-        }
-        else
-        {
-            currentBattery = currentBattery + charge;
-        }
-    }
-
-    //Si tiene batería, puede encender y apagar la camara
-    //Si no tiene bateria, queda apagada
-    //Si recarga batería puede volver a encender y apagar
-    public void BatteryControl()
-    {
-
-
-        if (onScreen && hasBattery && state == "On")
-        {
-            currentBattery -= drainSpeed * Time.deltaTime;
-        }
-
-        else if (!hasBattery)
-        {
-            state = "Off";
-        }
-
-        currentBattery = Mathf.Clamp(currentBattery, 0f, maxBattery);
-        batteryFill.color = Color.Lerp(Color.red, Color.green, currentBattery / maxBattery);
-        batteryFill.fillAmount = currentBattery / maxBattery;
-
-        if (currentBattery <= 0f)
-        {
-            hasBattery = false;
-        }
-        else
-        {
-            hasBattery = true;
-        }
-
-    }
-
-    //Funcion Publica para que sea modificable externamente
-    //Estados= "on", "off" y "static"
-    public void ChangeState(string stateInput)
-    {
-        switch (stateInput)
-        {
-            case "on" or "On":
-                setOn();
-                break;
-            case "off" or "Off":
-                setOff();
-                break;
-            case "static" or "Static":
-                setStatic();
-                break;
-
-            default:
-                setOn();
-                break;
-        }
-    }
-
-
-    //Si se llama desde el player Input
-    private void ScreenActivation()
-    {
-        if (readyToScreen)
-        {
-            readyToScreen = false; //Bandera para el cooldown
-            onScreen = !onScreen;
-            if (onScreen)
-            {
-                setOff();
-            }
-            else if (!onScreen)
-            {
-                setOn();
-            }
-            Invoke(nameof(ResetScreen), screenCooldown); //Cooldown para no spamear el botón de cámara
-
-        }
     }
 
 
@@ -162,26 +78,16 @@ public class ScreenController : MonoBehaviour
     {
         if (Keyboard.current[buttonCamera].wasPressedThisFrame && readyToScreen)
         {
-            readyToScreen = false; //Bandera para el cooldown
+            readyToScreen = false;
             onScreen = !onScreen;
-            if (onScreen)
-            {
-                state = "On";
-            }
+
+            if (onScreen && battery.HasBattery)
+                ChangeState(ScreenState.On);
             else
-            {
-                state = "Off";
-            }
-            Invoke(nameof(ResetScreen), screenCooldown); //Cooldown para no spamear el botón de cámara
+                ChangeState(ScreenState.Off);
 
+            Invoke(nameof(ResetScreen), screenCooldown);
         }
-
-
-        if (Keyboard.current[rechargeBattery].wasPressedThisFrame)
-        {
-            BatteryRecharge(25f);
-        }
-
 
     }
 
@@ -195,47 +101,67 @@ public class ScreenController : MonoBehaviour
         screenArm.localRotation = Quaternion.Euler(rotX, 0f, 0f);
     }
 
+    //Si tiene batería, puede encender y apagar la camara
+    //Si no tiene bateria, queda apagada
+    //Si recarga batería puede volver a encender y apagar
+    public void BatteryUsage()
+    {
+
+        if (onScreen && state == ScreenState.On && battery.HasBattery)
+        {
+            battery.Drain(drainMultiplier);
+        }
+
+        if (!battery.HasBattery)
+        {
+            ChangeState(ScreenState.Off);
+        }
+
+        if (battery.HasBattery && state == ScreenState.Off)
+        {
+            ChangeState(ScreenState.On);
+        }
+
+    }
+    private void UpdateUI()
+    {
+        float percent = battery.BatteryPercent;
+
+        batteryFill.fillAmount = percent;
+        batteryFill.color = Color.Lerp(Color.red, Color.green, percent);
+    }
+
+    //Funcion Publica para que sea modificable externamente
+    //Estados= "on", "off" y "static"
+    public void ChangeState(ScreenState newState)
+    {
+        if (state == newState) return;
+
+        state = newState;
+
+        switch (state)
+        {
+            case ScreenState.On:
+                setOn();
+                break;
+            case ScreenState.Off:
+                setOff();
+                break;
+            case ScreenState.Static:
+                setStatic();
+                break;
+        }
+    }
+
+
+
+
     private void ResetScreen()
     {
         readyToScreen = true;
     }
 
-    //Cambia de Estado entre Encendido, Apagado y Estática Crear funciones publicas para que sean llamadas desde afuera
-    private void SwapStates()
-    {
-        if (Keyboard.current[staticState].wasPressedThisFrame)
-        {
-            state = "Static";
-        }
-        if (Keyboard.current[offState].wasPressedThisFrame)
-        {
-            state = "Off";
-        }
-        if (Keyboard.current[cameraState].wasPressedThisFrame)
-        {
-            state = "On";
-        }
-    }
 
-    private void setState(string stateInput)
-    {
-        switch (stateInput)
-        {
-            case "on" or "On":
-                setOn();
-                break;
-            case "off" or "Off":
-                setOff();
-                break;
-            case "static" or "Static":
-                setStatic();
-                break;
-
-            default:
-                setOn();
-                break;
-        }
-    }
 
     //Seteos de los Estados (Encendido, Apagado o Estatica) (Para reutilizar codigo)
     private void setOn()

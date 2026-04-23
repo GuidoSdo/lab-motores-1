@@ -363,6 +363,8 @@ GameObject:
   - component: {fileID: 1681496878611017567}
   - component: {fileID: 8884530983409943528}
   - component: {fileID: 6229533040964604301}
+  - component: {fileID: 6548614881153900144}
+  - component: {fileID: 8701588984106289105}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -561,7 +563,33 @@ MonoBehaviour:
   _jumpHeight: 2
   _gravity: -12
   _cameraTransform: {fileID: 7995044302871098811}
-  _rayLength: 10
+--- !u!114 &6548614881153900144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7565767048124621487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e94a418610781c47951019521c045dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInteractor
+  _rayLength: 3
+--- !u!114 &8701588984106289105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7565767048124621487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38e41bf1f3500f64faf8c8d2e0b61434, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BatteryController
+  currentBattery: 0
+  maxBattery: 100
 --- !u!1001 &8810375354894112490
 PrefabInstance:
   m_ObjectHideFlags: 0
