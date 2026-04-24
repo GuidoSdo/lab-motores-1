@@ -1,0 +1,57 @@
+name: Validate Runtime Documentation
+
+on:
+  pull_request:
+    paths:
+      - 'Assets/_Project/Scripts/Runtime/**.cs'
+      - 'tools/Validate-RuntimeDocumentation.ps1'
+      - '.github/workflows/validate-docs.yml'
+  push:
+    branches: [main, develop]
+    paths:
+      - 'Assets/_Project/Scripts/Runtime/**.cs'
+      - 'tools/Validate-RuntimeDocumentation.ps1'
+
+jobs:
+  validate:
+    name: Validar documentacion de Runtime
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Necesitamos historial para poder diffear contra la rama base
+          fetch-depth: 0
+
+      - name: Determinar archivos a validar
+        id: changed
+        shell: pwsh
+        run: |
+          if ($env:GITHUB_EVENT_NAME -eq 'pull_request') {
+            $base = "origin/$env:GITHUB_BASE_REF"
+            $changed = git diff --name-only --diff-filter=ACMR $base...HEAD -- 'Assets/_Project/Scripts/Runtime/*.cs'
+          } else {
+            # Push: comparamos contra el commit anterior
+            $changed = git diff --name-only --diff-filter=ACMR HEAD~1 HEAD -- 'Assets/_Project/Scripts/Runtime/*.cs'
+          }
+
+          if (-not $changed) {
+            Write-Host "No hay scripts de Runtime modificados."
+            "files=" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+            exit 0
+          }
+
+          Write-Host "Archivos a validar:"
+          $changed | ForEach-Object { Write-Host "  $_" }
+
+          # Joineamos con espacios para pasarlo al siguiente step
+          $joined = ($changed -join ' ')
+          "files=$joined" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+
+      - name: Ejecutar validador en modo estricto
+        if: steps.changed.outputs.files != ''
+        shell: pwsh
+        run: |
+          $files = "${{ steps.changed.outputs.files }}" -split ' '
+          pwsh -File ./tools/Validate-RuntimeDocumentation.ps1 -Strict -Files $files
