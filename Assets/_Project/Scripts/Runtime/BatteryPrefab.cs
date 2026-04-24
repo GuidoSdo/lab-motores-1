@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Battery : MonoBehaviour, IInteractable
+public class BatteryPrefab : MonoBehaviour, IInteractable
 {
     public float charge = 25f;
     public void Interact(GameObject interactor)
