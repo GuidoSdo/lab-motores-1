@@ -9,11 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3300651637906355299}
+  - component: {fileID: 4470810030279327648}
   - component: {fileID: 7772331366405400716}
   - component: {fileID: 7241988223630482996}
   - component: {fileID: 8984385941173606520}
   - component: {fileID: 7306046870300559181}
   - component: {fileID: 7719175861166483912}
+  - component: {fileID: 5042585805207038158}
   m_Layer: 0
   m_Name: Door
   m_TagString: Untagged
@@ -36,6 +38,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4470810030279327648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4449648230976642890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f349eae9cd495664980e5e66910fa05b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DoorPrefab
+  requiredKeyID: 0
+  doorVisual: {fileID: 3300651637906355299}
+  openSpeed: 2
 --- !u!114 &7772331366405400716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -356,3 +373,24 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!65 &5042585805207038158
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4449648230976642890}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4, y: 6, z: 7.9878154}
+  m_Center: {x: 0, y: 0, z: -0.040270943}

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TestColor : MonoBehaviour
+public class OutlineMaterialEditor : MonoBehaviour
 {
     public Renderer outlineRenderer;
 

@@ -18,14 +18,6 @@ public class ScreenController : MonoBehaviour
     [Header("Luz De Pantalla")]
     public Light backLight;
 
-    //====De Prueba borrar despues=======
-    [Header("Prueba, borrar luego")]
-    public Key cameraState;
-    public Key offState;
-    public Key staticState;
-    public Key rechargeBattery;
-    //===================================
-
     [Header("Renderer y Texturas")]
     public Renderer screenRenderer;
 
@@ -91,7 +83,6 @@ public class ScreenController : MonoBehaviour
 
     }
 
-    //Arreglar, poner bandera para que se pueda poner otro estado (Estática) desde otro lado
     private void ArmControl()
     {
         //Si onScreen es verdadero target=35f, si es falso target=0f
