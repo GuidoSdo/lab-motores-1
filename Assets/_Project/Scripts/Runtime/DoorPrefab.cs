@@ -16,6 +16,12 @@ public class DoorPrefab : MonoBehaviour
 
     private void Start()
     {
+        if (doorVisual == null)
+        {
+            Debug.LogError("DoorVisual no asignado en " + name);
+            return;
+        }
+
         // Guardamos posición inicial
         closedPosition = doorVisual.localPosition;
 
@@ -24,7 +30,10 @@ public class DoorPrefab : MonoBehaviour
 
         if (col != null)
         {
-            float width = col.bounds.size.x;
+            // Convertimos tamaño del collider a espacio local
+            Vector3 localSize = doorVisual.InverseTransformVector(col.bounds.size);
+
+            float width = Mathf.Abs(localSize.x);
 
             // Se desliza hacia su derecha local
             openPosition = closedPosition + doorVisual.right * width;
@@ -80,7 +89,7 @@ public class DoorPrefab : MonoBehaviour
         Open();
     }
 
-    private void Open()
+    public void Open()
     {
         isOpen = true;
         isOpening = true;
