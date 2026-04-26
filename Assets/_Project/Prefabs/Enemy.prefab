@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 3541734249926712329}
   - component: {fileID: -5909451265458554090}
   - component: {fileID: 3412588339728573646}
+  - component: {fileID: 7214598247884604202}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -110,7 +111,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -184,3 +185,20 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 0
+  drawDetectionRay: 1
+  enableDebugLogs: 0
+  drawRuntimeDebugLines: 1
+--- !u!114 &7214598247884604202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2234363454583839871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d94b38b9f7fe6da4eb3eb976e196fa07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyDamage
+  _damageToPlayer: 10
+  _enableDebugLogs: 1

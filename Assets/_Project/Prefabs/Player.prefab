@@ -368,6 +368,7 @@ GameObject:
   - component: {fileID: 6548614881153900144}
   - component: {fileID: 8701588984106289105}
   - component: {fileID: 4435691274578052976}
+  - component: {fileID: 2287211281840384079}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -641,6 +642,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16626d31df4861f4d8583fad7c2018a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::KeyController
+--- !u!114 &2287211281840384079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7565767048124621487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e35e0cb5d2643aa43b2f64dfbb1d8336, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
+  _maxHealth: 100
 --- !u!1001 &8810375354894112490
 PrefabInstance:
   m_ObjectHideFlags: 0
