@@ -1,17 +1,19 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[DisallowMultipleComponent]
+[RequireComponent(typeof(PlayerInput))]
 /// <summary>
 /// Punto central del prefab del jugador.
 /// Reune referencias a los componentes principales para que otros sistemas
 /// puedan identificar al jugador sin acoplarse a un script especifico.
 /// </summary>
-[DisallowMultipleComponent]
-[RequireComponent(typeof(PlayerInput))]
 public class PlayerController : MonoBehaviour
 {
     [Header("Player Components")]
+    [Tooltip("Referencia al componente que resuelve el movimiento del jugador.")]
     [SerializeField] private PlayerMovement movement;
+    [Tooltip("Referencia al componente que resuelve las interacciones del jugador.")]
     [SerializeField] private PlayerInteractor interactor;
 
     public PlayerMovement Movement => movement;
@@ -32,7 +34,6 @@ public class PlayerController : MonoBehaviour
         {
             interactor = GetComponent<PlayerInteractor>();
         }
-
     }
 
     /// <summary>
