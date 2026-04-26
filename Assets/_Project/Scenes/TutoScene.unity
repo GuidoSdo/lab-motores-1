@@ -1043,20 +1043,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3701660114897830024, guid: 2f4962372535e9a4280c02d2c3d194a7, type: 3}
-      propertyPath: m_CullingMask.m_Bits
-      value: 479
-      objectReference: {fileID: 0}
-    - target: {fileID: 4473550804429192033, guid: 2f4962372535e9a4280c02d2c3d194a7, type: 3}
-      propertyPath: m_VolumeLayerMask.m_Bits
-      value: 769
-      objectReference: {fileID: 0}
     - target: {fileID: 6138467562449030214, guid: 2f4962372535e9a4280c02d2c3d194a7, type: 3}
       propertyPath: m_Name
       value: CameraHolderEnemigo
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 7988912979849206246, guid: 2f4962372535e9a4280c02d2c3d194a7, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1651,6 +1642,10 @@ PrefabInstance:
     - target: {fileID: 2882441113925725034, guid: 10563c153a3b27343b95efa68c144411, type: 3}
       propertyPath: m_Center.z
       value: 0.46313292
+      objectReference: {fileID: 0}
+    - target: {fileID: 5975943098515747520, guid: 10563c153a3b27343b95efa68c144411, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 7565767048124621487, guid: 10563c153a3b27343b95efa68c144411, type: 3}
       propertyPath: m_Name
