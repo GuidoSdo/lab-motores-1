@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Interactivo
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -16,9 +17,9 @@ TagManager:
   - OutlineObject
   - FXEnemy
   - Screen
-  - 
-  - 
-  - 
+  - FXPlayer
+  - FXSecurity
+  - LightIgnore
   - 
   - 
   - 

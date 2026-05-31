@@ -45,6 +45,8 @@ public class PlayerMovement : MonoBehaviour
 
     private float _verticalVelocity;
     private float _pitch;
+    
+    public bool _canControl = true;
 
     private void Awake()
     {
@@ -59,9 +61,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        HandleMovement();
-        HandleRotation();
-        HandleLook();
+        if (_canControl)
+        {
+            HandleMovement();
+            HandleRotation();
+            HandleLook();
+        }
     }
 
     // ================

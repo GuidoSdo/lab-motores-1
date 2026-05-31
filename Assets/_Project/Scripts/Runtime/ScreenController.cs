@@ -1,12 +1,16 @@
 using UnityEngine;
-using UnityEngine.Video;
-using UnityEngine.UI;
+using UnityEngine.Device;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class ScreenController : MonoBehaviour
 {
     [Header("Control De Brazo")]
     public Transform screenArm;
+
+    public GameObject screen;
+    public GameObject phone;
 
     public float armSpeed = 20f;
     private bool readyToScreen = true;
@@ -25,13 +29,16 @@ public class ScreenController : MonoBehaviour
     public Texture offTexture;
     public VideoPlayer staticVideo;
 
+    private Texture securityTexture;
+
     
 
     public enum ScreenState
     {
         On,
         Off,
-        Static
+        Static,
+        Security
     }
     private ScreenState state = ScreenState.On;
 
@@ -54,15 +61,53 @@ public class ScreenController : MonoBehaviour
     {
         //Valores Iniciales
         rotX = screenArm.rotation.eulerAngles.x;
-        screenArm.Rotate(35, 0, 0);
+        ChangeState(ScreenState.Off);
+        onScreen = false;
+        screenArm.Rotate(50, 0, 0);
     }
     void Update()
     {
         ScreenInput();
         ArmControl();
-        BatteryUsage();
+        //BatteryUsage();
         UpdateUI();
 
+    }
+
+    //Aca no hay alert, solo ve cámaras de seguridad
+    public void ActivateSecurityCamera(Texture camera)
+    {
+        securityTexture = camera;
+        if (readyToScreen)
+        {
+            readyToScreen = false;
+            onScreen = !onScreen;
+
+            if (onScreen)
+                ChangeState(ScreenState.Security);
+            else
+                ChangeState(ScreenState.Off);
+
+            Invoke(nameof(ResetScreen), screenCooldown);
+        }
+    }
+
+
+    //Lógica de ALERT:
+    public void ActivateCamera()
+    {
+        if (readyToScreen)
+        {
+            readyToScreen = false;
+            onScreen = !onScreen;
+
+            if (onScreen)
+                ChangeState(ScreenState.On);
+            else
+                ChangeState(ScreenState.Off);
+
+            Invoke(nameof(ResetScreen), screenCooldown);
+        }
     }
 
 
@@ -86,10 +131,21 @@ public class ScreenController : MonoBehaviour
     private void ArmControl()
     {
         //Si onScreen es verdadero target=35f, si es falso target=0f
-        float target = onScreen ? 0f : 35f;
+        float target = onScreen ? 0f : 50f;
         //"Animacion" de la camara levantandose y escondiendose
         rotX = Mathf.MoveTowards(rotX, target, armSpeed * Time.deltaTime); //Se mueve hacia  rotando
         screenArm.localRotation = Quaternion.Euler(rotX, 0f, 0f);
+        // Mostrar mientras sube o baja
+        if (!onScreen && rotX >= 49f)
+        {
+            screen.SetActive(false);
+            phone.SetActive(false);
+        }
+        else
+        {
+            screen.SetActive(true);
+            phone.SetActive(true);
+        }
     }
 
     //Si tiene batería, puede encender y apagar la camara
@@ -141,6 +197,9 @@ public class ScreenController : MonoBehaviour
             case ScreenState.Static:
                 setStatic();
                 break;
+            case ScreenState.Security:
+                setSecurity();
+                break;
         }
     }
 
@@ -172,6 +231,12 @@ public class ScreenController : MonoBehaviour
         backLight.enabled = true;
         screenRenderer.material.SetTexture("_BaseMap", offTexture);
         staticVideo.Play();
+    }
+    private void setSecurity()
+    {
+        backLight.enabled = true;
+        staticVideo.Stop();
+        screenRenderer.material.SetTexture("_BaseMap", securityTexture);
     }
 
 }
