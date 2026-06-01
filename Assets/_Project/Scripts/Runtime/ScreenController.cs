@@ -42,19 +42,30 @@ public class ScreenController : MonoBehaviour
     }
     private ScreenState state = ScreenState.On;
 
+
+
+    //Alerta
+    [Header("Alerta")]
+    public AlertController alert;
+    [SerializeField] private Image alertFill;
+    [SerializeField] private float fillMultiplier = 1f;
+    private bool alerting = false;
+
+
+    /*
     //Batería
     [Header("Batería")]
     private BatteryController battery;
     [SerializeField] private Image batteryFill;
     [SerializeField] private float drainMultiplier = 1f;
-
+    */
 
     //Que pueda pulsar un botón que llame a una funcion del enemigo (Afectar)
 
 
     private void Awake()
     {
-        battery = GetComponentInParent<BatteryController>();
+        //battery = GetComponentInParent<BatteryController>();
     }
 
     private void Start()
@@ -69,6 +80,7 @@ public class ScreenController : MonoBehaviour
     {
         ScreenInput();
         ArmControl();
+        AlertUsage();
         //BatteryUsage();
         UpdateUI();
 
@@ -102,14 +114,27 @@ public class ScreenController : MonoBehaviour
             onScreen = !onScreen;
 
             if (onScreen)
+            {
+                alerting = true;
                 ChangeState(ScreenState.On);
+            }
             else
+            {
+                alerting = false;
                 ChangeState(ScreenState.Off);
+            }
 
             Invoke(nameof(ResetScreen), screenCooldown);
         }
     }
 
+    public void AlertUsage()
+    {
+        if (onScreen && state == ScreenState.On && alerting)
+        {
+            alert.RaiseAlert(fillMultiplier * Time.deltaTime);
+        }
+    }
 
     private void ScreenInput()
     {
@@ -118,7 +143,7 @@ public class ScreenController : MonoBehaviour
             readyToScreen = false;
             onScreen = !onScreen;
 
-            if (onScreen && battery.HasBattery)
+            if (onScreen)
                 ChangeState(ScreenState.On);
             else
                 ChangeState(ScreenState.Off);
@@ -148,6 +173,7 @@ public class ScreenController : MonoBehaviour
         }
     }
 
+    /*
     //Si tiene batería, puede encender y apagar la camara
     //Si no tiene bateria, queda apagada
     //Si recarga batería puede volver a encender y apagar
@@ -170,12 +196,20 @@ public class ScreenController : MonoBehaviour
         }
 
     }
+    */
+
     private void UpdateUI()
     {
+        float percent = alert.AlertPercent;
+
+        alertFill.fillAmount = percent;
+        alertFill.color = Color.Lerp(Color.green, Color.red, percent);
+        /*
         float percent = battery.BatteryPercent;
 
         batteryFill.fillAmount = percent;
         batteryFill.color = Color.Lerp(Color.red, Color.green, percent);
+        */
     }
 
     //Funcion Publica para que sea modificable externamente
