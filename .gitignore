@@ -12,6 +12,9 @@
 /[Uu]ser[Ss]ettings/
 *.log
 
+# Per-user ProBuilder editor preferences and transient shape state
+/ProjectSettings/Packages/com.unity.probuilder/Settings.json
+
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/
