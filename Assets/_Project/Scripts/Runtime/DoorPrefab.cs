@@ -8,6 +8,12 @@ public class DoorPrefab : MonoBehaviour
     [SerializeField] private Transform doorVisual; // parte que se mueve
     [SerializeField] private float openSpeed = 2f;
 
+    [SerializeField] private AudioSource openDoorAudio;
+
+    public bool needsKey = true;
+
+    [SerializeField] private GameObject doorMesh;
+
     private Vector3 closedPosition;
     private Vector3 openPosition;
 
@@ -60,6 +66,7 @@ public class DoorPrefab : MonoBehaviour
             {
                 doorVisual.localPosition = openPosition;
                 isOpening = false;
+                doorMesh.SetActive(false);
             }
         }
     }
@@ -77,23 +84,31 @@ public class DoorPrefab : MonoBehaviour
 
     private void TryOpen(GameObject interactor)
     {
-        KeyController keys = interactor.GetComponentInParent<KeyController>();
-
-        if (keys == null || !keys.HasKey(requiredKeyID))
+        if (needsKey == true)
         {
-            print("Necesitas la llave " + requiredKeyID);
-            return;
+            KeyController keys = interactor.GetComponentInParent<KeyController>();
+
+            if (keys == null || !keys.HasKey(requiredKeyID))
+            {
+                print("Necesitas la llave " + requiredKeyID);
+                return;
+            }
+            //Usa la llave especifica si es que la tiene
+            keys.UseKey(requiredKeyID);
+            Open();
         }
-        //Usa la llave especifica si es que la tiene
-        keys.UseKey(requiredKeyID);
-        Open();
+        else
+        {
+            Open();
+        }
+        
     }
 
     public void Open()
     {
         isOpen = true;
         isOpening = true;
-        print("Puerta abierta");
+        openDoorAudio.Play();
         //Animacion: se desliza hacia un costado
     }
 }

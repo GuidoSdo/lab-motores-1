@@ -48,7 +48,7 @@ public class ScreenController : MonoBehaviour
     [Header("Alerta")]
     public AlertController alert;
     [SerializeField] private Image alertFill;
-    [SerializeField] private float fillMultiplier = 1f;
+    //[SerializeField] private float fillMultiplier = 1f;
     private bool alerting = false;
 
 
@@ -132,7 +132,7 @@ public class ScreenController : MonoBehaviour
     {
         if (onScreen && state == ScreenState.On && alerting)
         {
-            alert.RaiseAlert(fillMultiplier * Time.deltaTime);
+            alert.RaiseAlert();
         }
     }
 

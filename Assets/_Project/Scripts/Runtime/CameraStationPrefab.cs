@@ -18,6 +18,8 @@ public class CameraStationPrefab : MonoBehaviour, IInteractable
 
     private bool usingStation = false;
 
+    public DoorPrefab doorToUnlock;
+
     public void Interact(GameObject interactor)
     {
         usingStation = !usingStation;
@@ -37,6 +39,7 @@ public class CameraStationPrefab : MonoBehaviour, IInteractable
         {
             case StationType.Prepare:
                 screen.ActivateCamera();
+                doorToUnlock.needsKey = false;
                 break;
             case StationType.Security:
                 screen.ActivateSecurityCamera(securityCameraTexture);
