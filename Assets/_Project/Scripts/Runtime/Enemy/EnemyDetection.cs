@@ -1,4 +1,7 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.AI;
 
 /// <summary>
 /// Se encarga de detectar si el jugador esta dentro del rango de vision del enemigo.
@@ -30,6 +33,7 @@ public class EnemyDetection : MonoBehaviour
     private float lastRayDistance;
     private bool hasRayToDraw;
     private bool lastRayWasBlocked;
+   
 
     public Transform DetectTarget()
     {
@@ -78,7 +82,9 @@ public class EnemyDetection : MonoBehaviour
         LogDebug("No se detecto ningun objetivo valido.");
         return null;
     }
+    
 
+   
     private void SaveDebugRay(Vector3 origin, Vector3 direction, float distance)
     {
         lastRayOrigin = origin;
@@ -127,3 +133,4 @@ public class EnemyDetection : MonoBehaviour
         }
     }
 }
+
