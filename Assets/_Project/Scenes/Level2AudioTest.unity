@@ -7717,6 +7717,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4810601234045360161, guid: 9fa6ee049a39fc74eb464fca61215c00, type: 3}
+      propertyPath: keyPickupSound
+      value: 
+      objectReference: {fileID: 1966951141}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
