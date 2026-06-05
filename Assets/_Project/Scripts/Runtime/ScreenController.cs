@@ -24,6 +24,9 @@ public class ScreenController : MonoBehaviour
     private bool readyToScreen = true;
     private bool onScreen = true;
 
+    public bool IsScreenOpen => onScreen;
+    public bool CanToggleScreen => readyToScreen;
+
     [Tooltip("Tiempo minimo entre cambios de estado de la pantalla.")]
     public float screenCooldown = 0.25f;
     private float rotX;
@@ -109,45 +112,50 @@ public class ScreenController : MonoBehaviour
     }
 
     //Aca no hay alert, solo ve cámaras de seguridad
-    public void ActivateSecurityCamera(Texture camera)
+    public bool ActivateSecurityCamera(Texture camera)
     {
+        if (!readyToScreen)
+            return false;
+
         securityTexture = camera;
-        if (readyToScreen)
-        {
-            readyToScreen = false;
-            onScreen = !onScreen;
 
-            if (onScreen)
-                ChangeState(ScreenState.Security);
-            else
-                ChangeState(ScreenState.Off);
+        readyToScreen = false;
+        onScreen = !onScreen;
 
-            Invoke(nameof(ResetScreen), screenCooldown);
-        }
+        if (onScreen)
+            ChangeState(ScreenState.Security);
+        else
+            ChangeState(ScreenState.Off);
+
+        Invoke(nameof(ResetScreen), screenCooldown);
+
+        return true;
     }
 
 
     //Lógica de ALERT:
-    public void ActivateCamera()
+    public bool ActivateCamera()
     {
-        if (readyToScreen)
+        if (!readyToScreen)
+            return false;
+
+        readyToScreen = false;
+        onScreen = !onScreen;
+
+        if (onScreen)
         {
-            readyToScreen = false;
-            onScreen = !onScreen;
-
-            if (onScreen)
-            {
-                alerting = true;
-                ChangeState(ScreenState.On);
-            }
-            else
-            {
-                alerting = false;
-                ChangeState(ScreenState.Off);
-            }
-
-            Invoke(nameof(ResetScreen), screenCooldown);
+            alerting = true;
+            ChangeState(ScreenState.On);
         }
+        else
+        {
+            alerting = false;
+            ChangeState(ScreenState.Off);
+        }
+
+        Invoke(nameof(ResetScreen), screenCooldown);
+
+        return true;
     }
 
     public void AlertUsage()

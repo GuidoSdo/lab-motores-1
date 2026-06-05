@@ -31,39 +31,64 @@ public class CameraStationPrefab : MonoBehaviour, IInteractable
     [Tooltip("Clip reproducido al dejar de usar la estacion.")]
     public AudioClip turnOffAudio;
 
-    private bool usingStation = false;
-
     [Header("Unlock")]
     [Tooltip("Puerta que se desbloquea cuando se usa una estacion de preparacion.")]
     public DoorPrefab doorToUnlock;
 
+    public ObjectiveController objectiveController;
+
     public void Interact(GameObject interactor)
     {
-        usingStation = !usingStation;
-        if (usingStation)
-        {
-            audioSource.PlayOneShot(turnOnAudio);
-        }
-        else 
-        {
-            audioSource.PlayOneShot(turnOffAudio);
-        }
-
         ScreenController screen = interactor.GetComponentInChildren<ScreenController>();
-        if (screen == null) return;
+
+        if (screen == null)
+            return;
+
+        bool changed = false;
 
         switch (stationType)
         {
             case StationType.Prepare:
-                screen.ActivateCamera();
-                doorToUnlock.needsKey = false;
+                changed = screen.ActivateCamera();
+                if (changed)
+                {
+                    if (screen.IsScreenOpen)
+                    {
+                        audioSource.PlayOneShot(turnOnAudio);
+                        objectiveController.CompleteObjective("- Usar la estación [E] para desbloquear la puerta");
+                        doorToUnlock.needsKey = false;
+                    }
+                    else
+                    {
+                        audioSource.PlayOneShot(turnOffAudio);
+                    }
+                }
                 break;
+
             case StationType.Security:
-                screen.ActivateSecurityCamera(securityCameraTexture);
+                changed = screen.ActivateSecurityCamera(
+                    securityCameraTexture);
+                if (changed)
+                {
+                    if (screen.IsScreenOpen)
+                    {
+                        audioSource.PlayOneShot(turnOnAudio);
+                        objectiveController.CompleteObjective("- Encuentra la estación de vigilancia");
+                    }
+                    else
+                    {
+                        audioSource.PlayOneShot(turnOffAudio);
+                    }
+                }
+
                 break;
         }
 
-        //Desactivo/Activo el movimiento del player cuando interactúa con un panel de cámara
-        playerMovement._canControl = !usingStation;
+        // Si la pantalla estaba en cooldown no hacemos nada
+        if (!changed)
+            return;
+
+        // El movimiento depende del estado real de la pantalla
+        playerMovement._canControl = !screen.IsScreenOpen;
     }
 }
