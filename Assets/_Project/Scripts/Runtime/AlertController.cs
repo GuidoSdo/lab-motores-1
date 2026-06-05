@@ -1,22 +1,40 @@
 using UnityEngine;
 using UnityEngine.Audio;
 
+/// <summary>
+/// Controla el nivel de alerta del jugador y transiciona la mezcla de audio segun el estado alcanzado.
+/// </summary>
 public class AlertController : MonoBehaviour
 {
 
+    [Header("Alerta")]
+    [Tooltip("Valor actual acumulado de alerta.")]
     [SerializeField] private float currentAlert;
+
+    [Tooltip("Valor maximo que puede alcanzar la alerta.")]
     [SerializeField] private float maxAlert = 100f;
 
+    [Tooltip("Velocidad a la que sube o baja la alerta por segundo.")]
     [SerializeField] private float fillRate = 2f;
 
+    [Tooltip("Duracion de la transicion entre snapshots del mixer.")]
     [SerializeField] private float transitionTime = 1.5f;
 
+    [Header("Audio")]
+    [Tooltip("Fuente que reproduce la musica de alerta cuando se activa el primer estado.")]
     [SerializeField] private AudioSource alertMusic;
 
 
+    [Tooltip("Snapshot usado cuando no hay alerta activa.")]
     [SerializeField] private AudioMixerSnapshot noAlertSnapshot;
+
+    [Tooltip("Snapshot usado al alcanzar el primer nivel de alerta.")]
     [SerializeField] private AudioMixerSnapshot firstAlertSnapshot;
+
+    [Tooltip("Snapshot usado al alcanzar el segundo nivel de alerta.")]
     [SerializeField] private AudioMixerSnapshot SecondAlertSnapshot;
+
+    [Tooltip("Snapshot usado al alcanzar la alerta maxima.")]
     [SerializeField] private AudioMixerSnapshot lastAlertSnapshot;
 
     public float AlertPercent => currentAlert / maxAlert;

@@ -1,10 +1,19 @@
 using UnityEngine;
 using UnityEngine.AI;
 
+/// <summary>
+/// Reproduce clips de pasos mientras el objeto se desplaza con NavMeshAgent o CharacterController.
+/// </summary>
 public class FootstepsAudio : MonoBehaviour
 {
+    [Header("Audio")]
+    [Tooltip("Fuente desde la que se reproducen los sonidos de pasos.")]
     [SerializeField] private AudioSource audioSource;
+
+    [Tooltip("Clips disponibles para variar el sonido de cada paso.")]
     [SerializeField] private AudioClip[] footstepClips;
+
+    [Tooltip("Tiempo entre reproducciones de pasos mientras el objeto esta en movimiento.")]
     [SerializeField] private float stepInterval = 0.5f;
 
     private NavMeshAgent agent;

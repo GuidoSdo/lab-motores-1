@@ -4,29 +4,48 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
+/// <summary>
+/// Controla la pantalla del jugador, su brazo, estados visuales, camaras y barra de alerta.
+/// </summary>
 public class ScreenController : MonoBehaviour
 {
     [Header("Control De Brazo")]
+    [Tooltip("Brazo o soporte que rota para mostrar u ocultar la pantalla.")]
     public Transform screenArm;
 
+    [Tooltip("Objeto visual de la pantalla que se activa mientras el brazo esta visible.")]
     public GameObject screen;
+
+    [Tooltip("Objeto visual del dispositivo que acompana a la pantalla.")]
     public GameObject phone;
 
+    [Tooltip("Velocidad de rotacion del brazo de la pantalla.")]
     public float armSpeed = 20f;
     private bool readyToScreen = true;
     private bool onScreen = true;
+
+    [Tooltip("Tiempo minimo entre cambios de estado de la pantalla.")]
     public float screenCooldown = 0.25f;
     private float rotX;
+
+    [Tooltip("Tecla usada para alternar la pantalla manualmente.")]
     public Key buttonCamera;
 
     [Header("Luz De Pantalla")]
+    [Tooltip("Luz que se enciende cuando la pantalla esta activa.")]
     public Light backLight;
 
     [Header("Renderer y Texturas")]
+    [Tooltip("Renderer donde se asignan las texturas de la pantalla.")]
     public Renderer screenRenderer;
 
+    [Tooltip("Textura usada cuando la pantalla muestra la camara principal.")]
     public Texture cameraTexture;
+
+    [Tooltip("Textura usada cuando la pantalla esta apagada.")]
     public Texture offTexture;
+
+    [Tooltip("Video usado para el estado de interferencia estatica.")]
     public VideoPlayer staticVideo;
 
     private Texture securityTexture;
@@ -46,7 +65,10 @@ public class ScreenController : MonoBehaviour
 
     //Alerta
     [Header("Alerta")]
+    [Tooltip("Controlador que acumula y expone el nivel de alerta.")]
     public AlertController alert;
+
+    [Tooltip("Imagen de UI que representa el relleno de la barra de alerta.")]
     [SerializeField] private Image alertFill;
     //[SerializeField] private float fillMultiplier = 1f;
     private bool alerting = false;

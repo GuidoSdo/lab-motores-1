@@ -2,13 +2,23 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
 
+/// <summary>
+/// Ajusta la mezcla de audio ambiente cuando el jugador entra o sale de una zona.
+/// </summary>
 public class RoomAudioTrigger : MonoBehaviour
 {
+    [Header("Mixer")]
+    [Tooltip("Mixer que contiene los parametros expuestos de ambiente.")]
     [SerializeField] private AudioMixer mixer;
 
+    [Tooltip("Nombre del parametro expuesto que controla el volumen ambiente.")]
     [SerializeField] private string volumeParameter = "AmbientVolume";
+
+    [Tooltip("Nombre del parametro expuesto que controla el pitch ambiente.")]
     [SerializeField] private string pitchParameter = "AmbientPitch";
 
+    [Header("Transicion")]
+    [Tooltip("Tiempo que tarda el audio en interpolar hasta los valores objetivo.")]
     [SerializeField] private float transitionTime = 1.5f;
 
     private Coroutine transitionCoroutine;

@@ -1,17 +1,30 @@
 using UnityEngine;
 
+/// <summary>
+/// Controla la apertura de una puerta, validando llave requerida o desbloqueo externo.
+/// </summary>
 public class DoorPrefab : MonoBehaviour
 {
+    [Header("Key")]
+    [Tooltip("Identificador de la llave necesaria para abrir esta puerta.")]
     [SerializeField] private int requiredKeyID;
 
     [Header("Door Movement")]
+    [Tooltip("Transform visual que se desplaza durante la apertura.")]
     [SerializeField] private Transform doorVisual; // parte que se mueve
+
+    [Tooltip("Velocidad con la que la puerta se mueve hacia la posicion abierta.")]
     [SerializeField] private float openSpeed = 2f;
 
+    [Header("Audio")]
+    [Tooltip("Fuente que reproduce el sonido de apertura.")]
     [SerializeField] private AudioSource openDoorAudio;
 
+    [Tooltip("Indica si la puerta requiere llave o puede abrirse por desbloqueo externo.")]
     public bool needsKey = true;
 
+    [Header("Visual")]
+    [Tooltip("Mesh que se oculta cuando la puerta termina de abrirse.")]
     [SerializeField] private GameObject doorMesh;
 
     private Vector3 closedPosition;
