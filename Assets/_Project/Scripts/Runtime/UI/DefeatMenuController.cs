@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class DefeatMenuController : MonoBehaviour
 {
@@ -8,11 +8,13 @@ public class DefeatMenuController : MonoBehaviour
 
     public void OnRetryButtonPressed()
     {
+        Time.timeScale = 1f;
         SceneLoader.TryLoadScene(gameSceneName, this);
     }
 
     public void OnMainMenuButtonPressed()
     {
+        Time.timeScale = 1f;
         SceneLoader.TryLoadScene(mainMenuSceneName, this);
     }
 

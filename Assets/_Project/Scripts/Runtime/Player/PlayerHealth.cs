@@ -1,7 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
-/// Gestiona la vida del jugador y centraliza el ingreso de dano y curacion.
+/// Gestiona la vida del jugador. Diseñado para un sistema Instakill (un golpe es mortal).
+/// Al morir, redirige automáticamente a la escena de derrota usando el sistema del proyecto.
 /// </summary>
 [DisallowMultipleComponent]
 public class PlayerHealth : MonoBehaviour
@@ -10,6 +11,10 @@ public class PlayerHealth : MonoBehaviour
     [Tooltip("Cantidad maxima de vida que puede tener el jugador.")]
     [Min(1)]
     [SerializeField] private int _maxHealth = 100;
+
+    [Header("Scene Routing")]
+    [Tooltip("Nombre exacto de la escena de derrota en el proyecto.")]
+    [SerializeField] private string _defeatSceneName = "DefeatScene"; // <-- Poné acá el nombre real de tu escena
 
     private int _currentHealth;
     private bool _isDead;
@@ -20,6 +25,12 @@ public class PlayerHealth : MonoBehaviour
 
     private void Awake()
     {
+        ResetFullStats();
+    }
+
+    public void ResetFullStats()
+    {
+        _isDead = false;
         _currentHealth = _maxHealth;
     }
 
@@ -30,12 +41,8 @@ public class PlayerHealth : MonoBehaviour
             return;
         }
 
-        _currentHealth = Mathf.Max(0, _currentHealth - damage);
-
-        if (_currentHealth == 0)
-        {
-            Die();
-        }
+        _currentHealth = 0;
+        Die();
     }
 
     public void Heal(int amount)
@@ -56,6 +63,13 @@ public class PlayerHealth : MonoBehaviour
         }
 
         _isDead = true;
-        Debug.Log("El jugador murio.", this);
+        Debug.Log("<color=red>[PLAYER HEALTH]</color> Muerte por Instakill detectada. Viajando a la escena de derrota...");
+
+        // 🐭 Liberamos el mouse antes de irnos para que el jugador pueda clickear los botones del menú de derrota
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        // 🎬 PLAN DIRECTO: Cargamos la escena de derrota usando tu SceneLoader nativo
+        SceneLoader.TryLoadScene(_defeatSceneName, this);
     }
 }
