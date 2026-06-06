@@ -1,28 +1,26 @@
 using UnityEngine;
 
 /// <summary>
-/// Se encarga de detectar si el jugador esta dentro del rango de vision del enemigo.
-/// Usa capas para filtrar candidatos rapidamente y PlayerController para validar
-/// que el objetivo detectado realmente pertenezca al jugador.
+/// Detecta al jugador dentro del radio y cono de vision del enemigo, validando capas y linea de vision.
 /// </summary>
 public class EnemyDetection : MonoBehaviour
 {
-    [Header("Detection Settings")]
-    [Tooltip("Radio maximo dentro del cual el enemigo busca posibles objetivos.")]
+    [Header("Deteccion")]
+    [Tooltip("Radio maximo usado por OverlapSphere para buscar posibles objetivos.")]
     [SerializeField] private float detectionRadius = 8f;
-    [Tooltip("Angulo total de vision del enemigo para validar si puede ver al objetivo.")]
+    [Tooltip("Angulo total del cono de vision. El objetivo debe quedar dentro de la mitad izquierda o derecha de este valor.")]
     [SerializeField] private float fieldOfView = 120f;
-    [Tooltip("Capas que contienen a los posibles objetivos detectables, como el jugador.")]
+    [Tooltip("Capas que contienen colliders detectables, normalmente el jugador y sus hijos.")]
     [SerializeField] private LayerMask targetMask;
-    [Tooltip("Capas que bloquean la linea de vision entre el enemigo y el objetivo.")]
+    [Tooltip("Capas que bloquean el raycast de vision entre el enemigo y el objetivo.")]
     [SerializeField] private LayerMask obstacleMask;
 
-    [Header("Debug")]
-    [Tooltip("Dibuja en la escena el ultimo raycast usado para comprobar la linea de vision.")]
+    [Header("Depuracion")]
+    [Tooltip("Dibuja en Scene View el ultimo raycast usado para comprobar linea de vision.")]
     [SerializeField] private bool drawDetectionRay = true;
-    [Tooltip("Muestra mensajes en consola para entender por que un objetivo fue o no detectado.")]
+    [Tooltip("Muestra logs de diagnostico sobre candidatos detectados, filtrados u obstruidos.")]
     [SerializeField] private bool enableDebugLogs = false;
-    [Tooltip("Dibuja lineas de depuracion en tiempo de ejecucion para visualizar la deteccion.")]
+    [Tooltip("Dibuja lineas temporales en Play Mode para visualizar raycasts de deteccion.")]
     [SerializeField] private bool drawRuntimeDebugLines = true;
 
     private Vector3 lastRayOrigin;
@@ -30,6 +28,7 @@ public class EnemyDetection : MonoBehaviour
     private float lastRayDistance;
     private bool hasRayToDraw;
     private bool lastRayWasBlocked;
+   
 
     public Transform DetectTarget()
     {
@@ -39,8 +38,7 @@ public class EnemyDetection : MonoBehaviour
 
         foreach (Collider hit in hits)
         {
-            // El collider detectado puede pertenecer a un hijo del prefab del jugador.
-            // Por eso validamos el PlayerController en la jerarquia padre.
+            // El collider detectado puede estar en un hijo del jugador; la identidad real se valida en la jerarquia padre.
             PlayerController playerController = hit.GetComponentInParent<PlayerController>();
             if (playerController == null)
             {
@@ -68,7 +66,7 @@ public class EnemyDetection : MonoBehaviour
                 return candidate;
             }
 
-            // TODO: Aca deberiamos considerar codear los obstaculos de las puertas?
+            // WIP: falta definir si las puertas bloquean vision siempre o dependen de su estado abierto/cerrado.
             lastRayWasBlocked = true;
             DrawRuntimeDebugLine(transform.position, directionToTarget, distance, Color.yellow);
             LogDebug($"'{candidate.name}' fue detectado, pero hay un obstaculo bloqueando la vision.");
@@ -78,7 +76,9 @@ public class EnemyDetection : MonoBehaviour
         LogDebug("No se detecto ningun objetivo valido.");
         return null;
     }
+    
 
+   
     private void SaveDebugRay(Vector3 origin, Vector3 direction, float distance)
     {
         lastRayOrigin = origin;
@@ -112,7 +112,7 @@ public class EnemyDetection : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, detectionRadius);
 
-        // Dibujamos los limites del campo de vision para visualizar el cono de deteccion.
+        // Los gizmos muestran el cono configurado aunque no haya un objetivo detectado en runtime.
         Vector3 leftBoundary = Quaternion.Euler(0f, -fieldOfView * 0.5f, 0f) * transform.forward;
         Vector3 rightBoundary = Quaternion.Euler(0f, fieldOfView * 0.5f, 0f) * transform.forward;
 
@@ -127,3 +127,4 @@ public class EnemyDetection : MonoBehaviour
         }
     }
 }
+
