@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
 
     public PlayerMovement Movement => movement;
     public PlayerInteractor Interactor => interactor;
+    public bool IsHidden { get; private set; }
 
     private void Awake()
     {
@@ -54,5 +55,13 @@ public class PlayerController : MonoBehaviour
         {
             Debug.LogWarning($"[{name}] deberia estar asignado a la layer 'Player'.", this);
         }
+    }
+
+    /// <summary>
+    /// Actualiza si el jugador puede ser detectado por los enemigos.
+    /// </summary>
+    public void SetHidden(bool isHidden)
+    {
+        IsHidden = isHidden;
     }
 }

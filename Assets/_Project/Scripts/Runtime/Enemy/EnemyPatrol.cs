@@ -233,6 +233,7 @@ public class EnemyPatrol : MonoBehaviour
             return false;
         }
 
+        navAgent.isStopped = false;
         return navAgent.SetDestination(destination);
     }
 }
