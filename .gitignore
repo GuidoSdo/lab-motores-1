@@ -82,5 +82,9 @@ crashlytics-build.properties
 # Unity package samples imported into the project
 /[Aa]ssets/[Ss]amples/
 
+# Unity Performance Testing run artifacts
+/[Aa]ssets/[Rr]esources/PerformanceTestRunInfo.json*
+/[Aa]ssets/[Rr]esources/PerformanceTestRunSettings.json*
+
 .vscode/
 *.slnx
