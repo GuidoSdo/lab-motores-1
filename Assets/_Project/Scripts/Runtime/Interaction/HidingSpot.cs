@@ -20,6 +20,8 @@ public class HidingSpot : MonoBehaviour
     [Tooltip("Muestra logs al detectar al jugador, iniciar el escondite, actualizar el temporizador y finalizar.")]
     [SerializeField] private bool enableDebugLogs = true;
 
+    [SerializeField] private ObjectiveController objectiveController;
+
     private Collider interactionTrigger;
     private GameObject playerInRange;
     private PlayerController hiddenPlayer;
@@ -33,6 +35,8 @@ public class HidingSpot : MonoBehaviour
     private bool isConsumed;
     private float remainingHidingTime;
     private int lastLoggedSecond = -1;
+
+    private bool usedHidingSpot = false;
 
     private void Awake()
     {
@@ -67,6 +71,11 @@ public class HidingSpot : MonoBehaviour
         }
 
         playerInRange = playerController.gameObject;
+        if (playerInRange && usedHidingSpot == false)
+        {
+            objectiveController.AddObjective("Pulsa [E] para esconderte al estar sobre piso morado (Evita persecución, un único uso)");
+            usedHidingSpot = true;
+        }
         LogDebug($"Jugador '{playerInRange.name}' dentro del rango. Presionar E para esconderse.");
     }
 
