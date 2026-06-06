@@ -28,6 +28,21 @@ public class EnemyDetection : MonoBehaviour
     private float lastRayDistance;
     private bool hasRayToDraw;
     private bool lastRayWasBlocked;
+
+    private float baseDetectionRadius;
+    private float baseFieldOfView;
+
+    private void Start()
+    {
+        baseDetectionRadius = detectionRadius;
+        baseFieldOfView = fieldOfView;
+    }
+
+    public void RaiseDetection(float detectRadius, float fov)
+    {
+        detectionRadius = detectRadius;
+        fieldOfView = fov;
+    }
    
 
     public Transform DetectTarget()

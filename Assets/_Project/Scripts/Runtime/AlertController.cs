@@ -37,6 +37,9 @@ public class AlertController : MonoBehaviour
     [Tooltip("Snapshot usado al alcanzar la alerta maxima.")]
     [SerializeField] private AudioMixerSnapshot lastAlertSnapshot;
 
+    [Tooltip("Script EnemyDetection del enemigo")]
+    [SerializeField] private EnemyDetection enemyDetection;
+
     public float AlertPercent => currentAlert / maxAlert;
 
     private enum AlertState
@@ -87,14 +90,17 @@ public class AlertController : MonoBehaviour
             case AlertState.First:
                 alertMusic.Play();
                 firstAlertSnapshot.TransitionTo(transitionTime);
+                enemyDetection.RaiseDetection(6f, 105f);
                 break;
 
             case AlertState.Second:
                 SecondAlertSnapshot.TransitionTo(transitionTime);
+                enemyDetection.RaiseDetection(7f, 110f);
                 break;
 
             case AlertState.Last:
                 lastAlertSnapshot.TransitionTo(transitionTime);
+                enemyDetection.RaiseDetection(8f, 120f);
                 break;
         }
     }

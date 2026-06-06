@@ -30,10 +30,10 @@ public class ScreenController : MonoBehaviour
     [Tooltip("Tiempo minimo entre cambios de estado de la pantalla.")]
     public float screenCooldown = 0.25f;
     private float rotX;
-
+    /*
     [Tooltip("Tecla usada para alternar la pantalla manualmente.")]
     public Key buttonCamera;
-
+    */
     [Header("Luz De Pantalla")]
     [Tooltip("Luz que se enciende cuando la pantalla esta activa.")]
     public Light backLight;
@@ -103,7 +103,7 @@ public class ScreenController : MonoBehaviour
     }
     void Update()
     {
-        ScreenInput();
+        //ScreenInput();
         ArmControl();
         AlertUsage();
         //BatteryUsage();
@@ -165,7 +165,7 @@ public class ScreenController : MonoBehaviour
             alert.RaiseAlert();
         }
     }
-
+    /*
     private void ScreenInput()
     {
         if (Keyboard.current[buttonCamera].wasPressedThisFrame && readyToScreen)
@@ -182,7 +182,7 @@ public class ScreenController : MonoBehaviour
         }
 
     }
-
+    */
     private void ArmControl()
     {
         //Si onScreen es verdadero target=35f, si es falso target=0f
