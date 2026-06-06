@@ -230,6 +230,36 @@ public class EnemyBehaviour : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Cancela la persecucion y busqueda actuales para volver al flujo de patrulla.
+    /// </summary>
+    public bool AbortPursuit()
+    {
+        bool isPursuingPlayer =
+            currentState == EnemyState.Chase ||
+            currentState == EnemyState.Search ||
+            wasChasingPlayer ||
+            isSearching;
+
+        if (!isPursuingPlayer)
+        {
+            return false;
+        }
+
+        CancelSearch();
+        wasChasingPlayer = false;
+
+        if (navAgent != null && navAgent.isActiveAndEnabled && navAgent.isOnNavMesh)
+        {
+            navAgent.isStopped = true;
+            navAgent.ResetPath();
+            navAgent.velocity = Vector3.zero;
+        }
+
+        SetState(EnemyState.Patrol);
+        return true;
+    }
+
     private bool TrySetDestination(Vector3 destination)
     {
         if (navAgent == null || !navAgent.isActiveAndEnabled || !navAgent.isOnNavMesh)

@@ -61,6 +61,12 @@ public class EnemyDetection : MonoBehaviour
                 continue;
             }
 
+            if (playerController.IsHidden)
+            {
+                LogDebug($"Se ignora a '{playerController.name}' porque esta escondido.");
+                continue;
+            }
+
             Transform candidate = playerController.transform;
             Vector3 directionToTarget = (candidate.position - transform.position).normalized;
 
