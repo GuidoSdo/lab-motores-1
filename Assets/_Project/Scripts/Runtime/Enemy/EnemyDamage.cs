@@ -1,45 +1,54 @@
 using UnityEngine;
 
 /// <summary>
-/// Aplica dano al jugador cuando entra en el trigger del enemigo.
+/// Aplica dano al PlayerHealth del jugador cuando entra en el trigger de contacto del enemigo.
 /// </summary>
 [DisallowMultipleComponent]
 [RequireComponent(typeof(Collider))]
 public class EnemyDamage : MonoBehaviour
 {
     [Header("Damage")]
-    [Tooltip("Cantidad de vida que el enemigo le quita al jugador por contacto.")]
+    [Tooltip("Cantidad de vida que se descuenta al jugador cuando entra en el trigger del enemigo.")]
     [Min(1)]
-    [SerializeField] private int _damageToPlayer = 10;
+    [SerializeField] private int damageToPlayer = 10;
 
-    [Header("Debug")]
-    [Tooltip("Activa logs de depuracion para entender como el enemigo detecta y aplica dano.")]
-    [SerializeField] private bool _enableDebugLogs = true;
+    [Header("Depuracion")]
+    [Tooltip("Activa logs para diagnosticar contactos ignorados y dano aplicado.")]
+    [SerializeField] private bool enableDebugLogs;
 
-    private Collider _damageCollider;
+    private Collider damageCollider;
 
     private void Awake()
     {
-        _damageCollider = GetComponent<Collider>();
+        // El collider debe existir antes de que Unity dispare eventos de trigger.
+        damageCollider = GetComponent<Collider>();
+        ValidatePrefabSetup();
+    }
 
-        if (!_damageCollider.isTrigger)
+    private void ValidatePrefabSetup()
+    {
+        if (damageCollider == null)
+        {
+            Debug.LogError($"[{nameof(EnemyDamage)}] Falta Collider en '{name}'.", this);
+            enabled = false;
+            return;
+        }
+
+        if (!damageCollider.isTrigger)
         {
             Debug.LogWarning(
-                $"[{nameof(EnemyDamage)}] El collider en '{name}' deberia tener 'Is Trigger' activado para aplicar dano por contacto.",
+                $"[{nameof(EnemyDamage)}] El Collider de '{name}' deberia tener Is Trigger activado para aplicar dano por contacto.",
                 this);
         }
 
-        LogDebug(
-            $"[{nameof(EnemyDamage)}] Inicializado en '{name}'. Requiere un Collider con 'Is Trigger' y un objetivo con {nameof(PlayerHealth)} en su jerarquia. Dano configurado: {_damageToPlayer}.");
+        // WIP: falta definir si el dano debe tener cooldown, knockback o aplicarse una sola vez por contacto.
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        LogDebug($"[{nameof(EnemyDamage)}] Trigger detectado con '{other.name}' (tag: '{other.tag}').");
-
         if (!other.CompareTag("Player"))
         {
-            LogDebug($"[{nameof(EnemyDamage)}] Se ignora '{other.name}' porque no tiene el tag 'Player'.");
+            LogDebug($"Se ignora '{other.name}' porque no tiene tag Player.");
             return;
         }
 
@@ -47,24 +56,20 @@ public class EnemyDamage : MonoBehaviour
         if (playerHealth == null)
         {
             Debug.LogWarning(
-                $"[{nameof(EnemyDamage)}] '{other.name}' tiene tag 'Player', pero no se encontro {nameof(PlayerHealth)} en su jerarquia.",
+                $"[{nameof(EnemyDamage)}] '{other.name}' tiene tag Player, pero no se encontro {nameof(PlayerHealth)} en su jerarquia.",
                 this);
             return;
         }
 
-        LogDebug(
-            $"[{nameof(EnemyDamage)}] Aplicando {_damageToPlayer} de dano a '{playerHealth.name}'. Vida actual antes del impacto: {playerHealth.CurrentHealth}.");
-        playerHealth.TakeDamage(_damageToPlayer);
-        LogDebug($"[{nameof(EnemyDamage)}] Dano aplicado a '{playerHealth.name}'. Vida restante: {playerHealth.CurrentHealth}.");
+        playerHealth.TakeDamage(damageToPlayer);
+        LogDebug($"Se aplico {damageToPlayer} de dano a '{playerHealth.name}'.");
     }
 
     private void LogDebug(string message)
     {
-        if (!_enableDebugLogs)
+        if (enableDebugLogs)
         {
-            return;
+            Debug.Log($"[{nameof(EnemyDamage)}] {message}", this);
         }
-
-        Debug.Log(message, this);
     }
 }
