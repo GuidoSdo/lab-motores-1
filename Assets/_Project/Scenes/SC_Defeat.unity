@@ -684,8 +684,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bc267fe88ff37542a2e5b82019294b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DefeatMenuController
-  gameSceneName: SC_Gameplay_L01
-  mainMenuSceneName: MainMenu
+  _defeatPanelContainer: {fileID: 116948441}
 --- !u!114 &691731778
 MonoBehaviour:
   m_ObjectHideFlags: 0

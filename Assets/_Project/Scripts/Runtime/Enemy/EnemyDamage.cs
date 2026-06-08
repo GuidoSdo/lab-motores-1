@@ -1,19 +1,14 @@
 using UnityEngine;
 
 /// <summary>
-/// Aplica dano al PlayerHealth del jugador cuando entra en el trigger de contacto del enemigo.
+/// Mata al jugador cuando entra en el trigger de contacto del enemigo.
 /// </summary>
 [DisallowMultipleComponent]
 [RequireComponent(typeof(Collider))]
 public class EnemyDamage : MonoBehaviour
 {
-    [Header("Damage")]
-    [Tooltip("Cantidad de vida que se descuenta al jugador cuando entra en el trigger del enemigo.")]
-    [Min(1)]
-    [SerializeField] private int damageToPlayer = 10;
-
     [Header("Depuracion")]
-    [Tooltip("Activa logs para diagnosticar contactos ignorados y dano aplicado.")]
+    [Tooltip("Activa logs para diagnosticar contactos ignorados e instakill aplicado.")]
     [SerializeField] private bool enableDebugLogs;
 
     private Collider damageCollider;
@@ -40,8 +35,6 @@ public class EnemyDamage : MonoBehaviour
                 $"[{nameof(EnemyDamage)}] El Collider de '{name}' deberia tener Is Trigger activado para aplicar dano por contacto.",
                 this);
         }
-
-        // WIP: falta definir si el dano debe tener cooldown, knockback o aplicarse una sola vez por contacto.
     }
 
     private void OnTriggerEnter(Collider other)
@@ -61,8 +54,8 @@ public class EnemyDamage : MonoBehaviour
             return;
         }
 
-        playerHealth.TakeDamage(damageToPlayer);
-        LogDebug($"Se aplico {damageToPlayer} de dano a '{playerHealth.name}'.");
+        playerHealth.Kill();
+        LogDebug($"Se aplico instakill a '{playerHealth.name}'.");
     }
 
     private void LogDebug(string message)
