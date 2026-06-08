@@ -2,8 +2,12 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// Mantiene la lista de objetivos activos y actualiza su representacion en pantalla.
+/// </summary>
 public class ObjectiveController : MonoBehaviour
 {
+    [Tooltip("Texto de UI donde se muestran los objetivos actuales.")]
     [SerializeField] private TMP_Text objectivesText;
 
     private List<Objective> objectives = new();
@@ -47,6 +51,9 @@ public class ObjectiveController : MonoBehaviour
     }
 }
 
+/// <summary>
+/// Estado serializable de un objetivo mostrado al jugador.
+/// </summary>
 [System.Serializable]
 public class Objective
 {

@@ -1,10 +1,17 @@
 using UnityEngine;
 
+/// <summary>
+/// Administra la energia disponible para sistemas del jugador que consumen bateria.
+/// </summary>
 public class BatteryController : MonoBehaviour
 {
-
+    [Tooltip("Carga actual de la bateria.")]
     [SerializeField] private float currentBattery;
+
+    [Tooltip("Carga maxima posible de la bateria.")]
     [SerializeField] private float maxBattery = 100f;
+
+    [Tooltip("Consumo base por segundo usado al drenar la bateria.")]
     [SerializeField] private float drainSpeed = 5f;
 
     public float BatteryPercent => currentBattery / maxBattery;

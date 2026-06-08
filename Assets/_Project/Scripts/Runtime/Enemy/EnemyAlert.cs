@@ -2,12 +2,12 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-/// <summary>
-/// Recibe una posicion sospechosa y mueve al enemigo para investigarla mientras mantiene deteccion del jugador.
-/// </summary>
 [DisallowMultipleComponent]
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(EnemyBehaviour))]
+/// <summary>
+/// Recibe una posicion sospechosa y mueve al enemigo para investigarla mientras mantiene deteccion del jugador.
+/// </summary>
 public class EnemyAlert : MonoBehaviour
 {
     [Header("Referencias")]
