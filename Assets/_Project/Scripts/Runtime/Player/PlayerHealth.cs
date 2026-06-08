@@ -1,51 +1,32 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
-/// Gestiona la vida del jugador y centraliza el ingreso de dano y curacion.
+/// Gestiona la muerte del jugador. El contacto con el enemigo es instakill.
 /// </summary>
 [DisallowMultipleComponent]
 public class PlayerHealth : MonoBehaviour
 {
-    [Header("Health")]
-    [Tooltip("Cantidad maxima de vida que puede tener el jugador.")]
-    [Min(1)]
-    [SerializeField] private int _maxHealth = 100;
+    [Header("Scene Routing")]
+    [Tooltip("Nombre o path exacto de la escena de derrota en Build Settings.")]
+    [SerializeField] private string _defeatSceneName = "Assets/_Project/Scenes/SC_Defeat.unity";
 
-    private int _currentHealth;
     private bool _isDead;
 
-    public int CurrentHealth => _currentHealth;
-    public int MaxHealth => _maxHealth;
     public bool IsDead => _isDead;
 
     private void Awake()
     {
-        _currentHealth = _maxHealth;
+        ResetDeathState();
     }
 
-    public void TakeDamage(int damage)
+    public void ResetDeathState()
     {
-        if (_isDead || damage <= 0)
-        {
-            return;
-        }
-
-        _currentHealth = Mathf.Max(0, _currentHealth - damage);
-
-        if (_currentHealth == 0)
-        {
-            Die();
-        }
+        _isDead = false;
     }
 
-    public void Heal(int amount)
+    public void Kill()
     {
-        if (_isDead || amount <= 0)
-        {
-            return;
-        }
-
-        _currentHealth = Mathf.Min(_maxHealth, _currentHealth + amount);
+        Die();
     }
 
     private void Die()
@@ -56,6 +37,11 @@ public class PlayerHealth : MonoBehaviour
         }
 
         _isDead = true;
-        Debug.Log("El jugador murio.", this);
+        Debug.Log("<color=red>[PLAYER HEALTH]</color> Instakill detectado. Cargando escena de derrota.", this);
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        SceneLoader.TryLoadScene(_defeatSceneName, this);
     }
 }
