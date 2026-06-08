@@ -23,8 +23,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _rotateSpeed = 100f;
 
     [Header("Jump Specs")]
+    /*
     [Tooltip("Altura maxima que alcanza el salto del jugador.")]
     [SerializeField] private float _jumpHeight = 2f;
+    */
     [Tooltip("Fuerza de gravedad aplicada al movimiento vertical del jugador.")]
     [SerializeField] private float _gravity = -12f;
 
@@ -45,6 +47,8 @@ public class PlayerMovement : MonoBehaviour
 
     private float _verticalVelocity;
     private float _pitch;
+    
+    public bool _canControl = true;
 
     private void Awake()
     {
@@ -59,9 +63,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        HandleMovement();
-        HandleRotation();
-        HandleLook();
+        if (_canControl)
+        {
+            HandleMovement();
+            HandleRotation();
+            HandleLook();
+        }
     }
 
     // ================
@@ -141,7 +148,7 @@ public class PlayerMovement : MonoBehaviour
             _speed = _normalSpeed;
         }
     }
-
+    /*
     public void OnJump(InputAction.CallbackContext context)
     {
         if (context.started && IsGrounded())
@@ -149,7 +156,7 @@ public class PlayerMovement : MonoBehaviour
             _verticalVelocity = Mathf.Sqrt(_jumpHeight * 2f * -_gravity);
         }
     }
-
+    */
     public void OnCameraMonster(InputAction.CallbackContext context)
     {
         if (context.performed)

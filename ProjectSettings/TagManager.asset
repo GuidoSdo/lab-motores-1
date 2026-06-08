@@ -17,9 +17,10 @@ TagManager:
   - OutlineObject
   - FXEnemy
   - Screen
+  - FXPlayer
+  - FXSecurity
+  - LightIgnore
   - Obstacle
-  - 
-  - 
   - 
   - 
   - 
