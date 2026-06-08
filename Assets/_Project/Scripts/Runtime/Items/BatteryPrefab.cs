@@ -1,8 +1,13 @@
 using UnityEngine;
 
+/// <summary>
+/// Recarga la bateria del jugador cuando se interactua con el pickup.
+/// </summary>
 public class BatteryPrefab : MonoBehaviour, IInteractable
 {
-    public float charge = 25f;
+    [Tooltip("Cantidad de bateria que recupera el jugador al recoger este objeto.")]
+    [SerializeField] private float charge = 25f;
+
     public void Interact(GameObject interactor)
     {
         BatteryController battery = interactor.GetComponentInParent<BatteryController>();

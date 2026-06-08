@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Provee una entrada comun para cargar escenas con validaciones basicas.
+/// </summary>
 public static class SceneLoader
 {
     public static bool TryLoadScene(string sceneName, Object context)

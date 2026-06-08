@@ -77,20 +77,11 @@ public class ScreenController : MonoBehaviour
     private bool alerting = false;
 
 
-    /*
-    //Batería
-    [Header("Batería")]
-    private BatteryController battery;
-    [SerializeField] private Image batteryFill;
-    [SerializeField] private float drainMultiplier = 1f;
-    */
-
     //Que pueda pulsar un botón que llame a una funcion del enemigo (Afectar)
 
 
     private void Awake()
     {
-        //battery = GetComponentInParent<BatteryController>();
     }
 
     private void Start()
@@ -106,7 +97,6 @@ public class ScreenController : MonoBehaviour
         //ScreenInput();
         ArmControl();
         AlertUsage();
-        //BatteryUsage();
         UpdateUI();
 
     }
@@ -202,31 +192,6 @@ public class ScreenController : MonoBehaviour
             phone.SetActive(true);
         }
     }
-
-    /*
-    //Si tiene batería, puede encender y apagar la camara
-    //Si no tiene bateria, queda apagada
-    //Si recarga batería puede volver a encender y apagar
-    public void BatteryUsage()
-    {
-
-        if (onScreen && state == ScreenState.On && battery.HasBattery)
-        {
-            battery.Drain(drainMultiplier);
-        }
-
-        if (!battery.HasBattery)
-        {
-            ChangeState(ScreenState.Off);
-        }
-
-        if (battery.HasBattery && state == ScreenState.Off)
-        {
-            ChangeState(ScreenState.On);
-        }
-
-    }
-    */
 
     private void UpdateUI()
     {

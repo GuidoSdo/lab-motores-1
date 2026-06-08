@@ -1,8 +1,12 @@
 using UnityEngine;
 
+/// <summary>
+/// Atiende las acciones principales del menu inicial.
+/// </summary>
 public class MainMenuController : MonoBehaviour
 {
     [Header("Scene")]
+    [Tooltip("Nombre de la escena que se carga al iniciar la partida.")]
     [SerializeField] private string gameSceneName = "SC_Gameplay_L01";
 
     public void OnPlayButtonPressed()

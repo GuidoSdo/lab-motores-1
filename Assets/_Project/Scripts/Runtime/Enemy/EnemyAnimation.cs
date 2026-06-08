@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.AI;
 
+/// <summary>
+/// Sincroniza los parametros del Animator del enemigo con su velocidad de navegacion.
+/// </summary>
 public class EnemyAnimation : MonoBehaviour
 {
     private Animator animator;
