@@ -608,18 +608,12 @@ MonoBehaviour:
   screenCooldown: 1
   buttonCamera: 9
   backLight: {fileID: 7339664591125438682}
-  cameraState: 257
-  offState: 258
-  staticState: 259
-  rechargeBattery: 114
   screenRenderer: {fileID: 5491698212840444320}
   cameraTexture: {fileID: 8400000, guid: d3de7fe2e2349d8489d901f00071a805, type: 2}
   offTexture: {fileID: 8400000, guid: 7684a49f71a8b8e41bb0056a7922ecdd, type: 2}
   staticVideo: {fileID: 6433243419034718120}
   batteryFill: {fileID: 1126538836252373185}
-  maxBattery: 100
-  currentBattery: 0
-  drainSpeed: 1.3
+  drainMultiplier: 1
 --- !u!1001 &1037451645042625184
 PrefabInstance:
   m_ObjectHideFlags: 0
