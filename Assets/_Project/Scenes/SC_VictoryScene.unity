@@ -685,7 +685,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DefeatMenuController
   gameSceneName: SC_Gameplay_L01
-  mainMenuSceneName: MainMenu
+  mainMenuSceneName: SC_MainMenu
 --- !u!114 &691731778
 MonoBehaviour:
   m_ObjectHideFlags: 0

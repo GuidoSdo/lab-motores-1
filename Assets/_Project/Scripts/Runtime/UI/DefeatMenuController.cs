@@ -4,7 +4,7 @@ public class DefeatMenuController : MonoBehaviour
 {
     [Header("Scenes")]
     [SerializeField] private string gameSceneName = "SC_Gameplay_L01";
-    [SerializeField] private string mainMenuSceneName = "MainMenu";
+    [SerializeField] private string mainMenuSceneName = "SC_MainMenu";
 
     public void OnRetryButtonPressed()
     {
