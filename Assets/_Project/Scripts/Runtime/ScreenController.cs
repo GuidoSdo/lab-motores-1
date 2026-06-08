@@ -1,29 +1,57 @@
 using UnityEngine;
-using UnityEngine.Video;
-using UnityEngine.UI;
+using UnityEngine.Device;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using UnityEngine.Video;
 
+/// <summary>
+/// Controla la pantalla del jugador, su brazo, estados visuales, camaras y barra de alerta.
+/// </summary>
 public class ScreenController : MonoBehaviour
 {
     [Header("Control De Brazo")]
+    [Tooltip("Brazo o soporte que rota para mostrar u ocultar la pantalla.")]
     public Transform screenArm;
 
+    [Tooltip("Objeto visual de la pantalla que se activa mientras el brazo esta visible.")]
+    public GameObject screen;
+
+    [Tooltip("Objeto visual del dispositivo que acompana a la pantalla.")]
+    public GameObject phone;
+
+    [Tooltip("Velocidad de rotacion del brazo de la pantalla.")]
     public float armSpeed = 20f;
     private bool readyToScreen = true;
     private bool onScreen = true;
+
+    public bool IsScreenOpen => onScreen;
+    public bool CanToggleScreen => readyToScreen;
+
+    [Tooltip("Tiempo minimo entre cambios de estado de la pantalla.")]
     public float screenCooldown = 0.25f;
     private float rotX;
+    /*
+    [Tooltip("Tecla usada para alternar la pantalla manualmente.")]
     public Key buttonCamera;
-
+    */
     [Header("Luz De Pantalla")]
+    [Tooltip("Luz que se enciende cuando la pantalla esta activa.")]
     public Light backLight;
 
     [Header("Renderer y Texturas")]
+    [Tooltip("Renderer donde se asignan las texturas de la pantalla.")]
     public Renderer screenRenderer;
 
+    [Tooltip("Textura usada cuando la pantalla muestra la camara principal.")]
     public Texture cameraTexture;
+
+    [Tooltip("Textura usada cuando la pantalla esta apagada.")]
     public Texture offTexture;
+
+    [Tooltip("Video usado para el estado de interferencia estatica.")]
     public VideoPlayer staticVideo;
+
+    private Texture securityTexture;
 
     
 
@@ -31,41 +59,113 @@ public class ScreenController : MonoBehaviour
     {
         On,
         Off,
-        Static
+        Static,
+        Security
     }
     private ScreenState state = ScreenState.On;
 
+
+
+    //Alerta
+    [Header("Alerta")]
+    [Tooltip("Controlador que acumula y expone el nivel de alerta.")]
+    public AlertController alert;
+
+    [Tooltip("Imagen de UI que representa el relleno de la barra de alerta.")]
+    [SerializeField] private Image alertFill;
+    //[SerializeField] private float fillMultiplier = 1f;
+    private bool alerting = false;
+
+
+    /*
     //Batería
     [Header("Batería")]
     private BatteryController battery;
     [SerializeField] private Image batteryFill;
     [SerializeField] private float drainMultiplier = 1f;
-
+    */
 
     //Que pueda pulsar un botón que llame a una funcion del enemigo (Afectar)
 
 
     private void Awake()
     {
-        battery = GetComponentInParent<BatteryController>();
+        //battery = GetComponentInParent<BatteryController>();
     }
 
     private void Start()
     {
         //Valores Iniciales
         rotX = screenArm.rotation.eulerAngles.x;
-        screenArm.Rotate(35, 0, 0);
+        ChangeState(ScreenState.Off);
+        onScreen = false;
+        screenArm.Rotate(50, 0, 0);
     }
     void Update()
     {
-        ScreenInput();
+        //ScreenInput();
         ArmControl();
-        BatteryUsage();
+        AlertUsage();
+        //BatteryUsage();
         UpdateUI();
 
     }
 
+    //Aca no hay alert, solo ve cámaras de seguridad
+    public bool ActivateSecurityCamera(Texture camera)
+    {
+        if (!readyToScreen)
+            return false;
 
+        securityTexture = camera;
+
+        readyToScreen = false;
+        onScreen = !onScreen;
+
+        if (onScreen)
+            ChangeState(ScreenState.Security);
+        else
+            ChangeState(ScreenState.Off);
+
+        Invoke(nameof(ResetScreen), screenCooldown);
+
+        return true;
+    }
+
+
+    //Lógica de ALERT:
+    public bool ActivateCamera()
+    {
+        if (!readyToScreen)
+            return false;
+
+        readyToScreen = false;
+        onScreen = !onScreen;
+
+        if (onScreen)
+        {
+            alerting = true;
+            ChangeState(ScreenState.On);
+        }
+        else
+        {
+            alerting = false;
+            ChangeState(ScreenState.Off);
+        }
+
+        Invoke(nameof(ResetScreen), screenCooldown);
+
+        return true;
+    }
+
+    public void AlertUsage()
+    {
+        if (onScreen && state == ScreenState.On && alerting)
+        {
+            alert.RaiseAlert();
+        }
+    }
+    /*
     private void ScreenInput()
     {
         if (Keyboard.current[buttonCamera].wasPressedThisFrame && readyToScreen)
@@ -73,7 +173,7 @@ public class ScreenController : MonoBehaviour
             readyToScreen = false;
             onScreen = !onScreen;
 
-            if (onScreen && battery.HasBattery)
+            if (onScreen)
                 ChangeState(ScreenState.On);
             else
                 ChangeState(ScreenState.Off);
@@ -82,16 +182,28 @@ public class ScreenController : MonoBehaviour
         }
 
     }
-
+    */
     private void ArmControl()
     {
         //Si onScreen es verdadero target=35f, si es falso target=0f
-        float target = onScreen ? 0f : 35f;
+        float target = onScreen ? 0f : 50f;
         //"Animacion" de la camara levantandose y escondiendose
         rotX = Mathf.MoveTowards(rotX, target, armSpeed * Time.deltaTime); //Se mueve hacia  rotando
         screenArm.localRotation = Quaternion.Euler(rotX, 0f, 0f);
+        // Mostrar mientras sube o baja
+        if (!onScreen && rotX >= 49f)
+        {
+            screen.SetActive(false);
+            phone.SetActive(false);
+        }
+        else
+        {
+            screen.SetActive(true);
+            phone.SetActive(true);
+        }
     }
 
+    /*
     //Si tiene batería, puede encender y apagar la camara
     //Si no tiene bateria, queda apagada
     //Si recarga batería puede volver a encender y apagar
@@ -114,12 +226,20 @@ public class ScreenController : MonoBehaviour
         }
 
     }
+    */
+
     private void UpdateUI()
     {
+        float percent = alert.AlertPercent;
+
+        alertFill.fillAmount = percent;
+        alertFill.color = Color.Lerp(Color.green, Color.red, percent);
+        /*
         float percent = battery.BatteryPercent;
 
         batteryFill.fillAmount = percent;
         batteryFill.color = Color.Lerp(Color.red, Color.green, percent);
+        */
     }
 
     //Funcion Publica para que sea modificable externamente
@@ -140,6 +260,9 @@ public class ScreenController : MonoBehaviour
                 break;
             case ScreenState.Static:
                 setStatic();
+                break;
+            case ScreenState.Security:
+                setSecurity();
                 break;
         }
     }
@@ -172,6 +295,12 @@ public class ScreenController : MonoBehaviour
         backLight.enabled = true;
         screenRenderer.material.SetTexture("_BaseMap", offTexture);
         staticVideo.Play();
+    }
+    private void setSecurity()
+    {
+        backLight.enabled = true;
+        staticVideo.Stop();
+        screenRenderer.material.SetTexture("_BaseMap", securityTexture);
     }
 
 }
