@@ -9,20 +9,14 @@ EditorBuildSettings:
     path: Assets/_Project/Scenes/SC_MainMenu.unity
     guid: e0438f65d7fa379468d871a34381198e
   - enabled: 1
-    path: Assets/_Project/Scenes/Legacy/SC_Gameplay_L01.unity
-    guid: fb36941e4a701d84e95e2cb7f3b360e9
-  - enabled: 1
-    path: Assets/_Project/Scenes/Legacy/SC_Gameplay_L02.unity
-    guid: 6a9c5dc0f9578cc478c896f6c5d697b6
-  - enabled: 1
-    path: Assets/_Project/Scenes/Legacy/SC_Gameplay_L03.unity
-    guid: 31048bc2ddf4516459ad93ff923c2546
+    path: Assets/_Project/Scenes/SC_Gameplay_L01.unity
+    guid: 3b8f7fee4f2773d40a0a158eea7ec025
   - enabled: 1
     path: Assets/_Project/Scenes/SC_Defeat.unity
     guid: 1f998c3a851b8aa4e96cef8b342d157d
-  - enabled: 0
-    path: Assets/_Project/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/_Project/Scenes/SC_VictoryScene.unity
+    guid: 931e3d63b298db3408ff122c25035229
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
